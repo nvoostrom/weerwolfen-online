@@ -19,35 +19,174 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1, 0.15, 0.3, 1)
+color = Color(0.05, 0.08, 0.15, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="BackgroundGradient" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -100.0
-offset_right = 150.0
-offset_bottom = 100.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.25, 0.8)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Weerwolven Online"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-
-[node name="StartButton" type="Button" parent="VBoxContainer"]
+[node name="MainPanel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(400, 500)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Spel Starten"
+size_flags_vertical = 4
+
+[node name="MainPanelBG" type="ColorRect" parent="CenterContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
+
+[node name="AccentBorder" type="ColorRect" parent="CenterContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="ContentBG" type="ColorRect" parent="CenterContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="LogoSection" type="VBoxContainer" parent="CenterContainer/MainPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/LogoSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 36
+text = "WEERWOLVEN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/LogoSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.4, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Online"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoonIcon" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/LogoSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "🌙"
+horizontal_alignment = 1
+
+[node name="DescriptionSection" type="VBoxContainer" parent="CenterContainer/MainPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DescriptionLabel" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/DescriptionSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.3, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "Speel het klassieke sociale deductiespel
+met vrienden in een mysterieuze dorpssfeer"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonSection" type="VBoxContainer" parent="CenterContainer/MainPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="StartButton" type="Button" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 20
+text = "🎮 Spel Starten"
+
+[node name="StartButtonBG" type="ColorRect" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection/StartButton"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.35, 0.15, 1)
+
+[node name="FeaturesList" type="VBoxContainer" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Feature1" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection/FeaturesList"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "⚡ Realtime multiplayer"
+horizontal_alignment = 1
+
+[node name="Feature2" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection/FeaturesList"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "👥 Tot 20 spelers"
+horizontal_alignment = 1
+
+[node name="Feature3" type="Label" parent="CenterContainer/MainPanel/VBoxContainer/ButtonSection/FeaturesList"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "🎭 Verschillende rollen"
+horizontal_alignment = 1
 
 [node name="GameModal" parent="." instance=ExtResource("2_9k7xm")]
 layout_mode = 1

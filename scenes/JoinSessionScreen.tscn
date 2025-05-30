@@ -18,83 +18,262 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1, 0.15, 0.3, 1)
+color = Color(0.05, 0.08, 0.15, 1)
+
+[node name="BackgroundGradient" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.25, 0.8)
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 60.0
+offset_bottom = 80.0
 grow_horizontal = 2
+theme_override_constants/separation = 15
+
+[node name="TopBarBG" type="ColorRect" parent="TopBar"]
+z_index = -1
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 0.9)
 
 [node name="BackButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
 text = "← Terug"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="TitleContainer" type="VBoxContainer" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="TitleLabel" type="Label" parent="TopBar/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 24
+text = "Deelnemen aan Sessie"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SubtitleLabel" type="Label" parent="TopBar/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Voer je naam in en wordt deel van het dorp"
+horizontal_alignment = 1
+
+[node name="MainContainer" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = 60.0
+offset_top = 80.0
 offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PinSection" type="VBoxContainer" parent="VBoxContainer"]
+[node name="ContentPanel" type="Panel" parent="MainContainer"]
+custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 
-[node name="PinLabel" type="Label" parent="VBoxContainer/PinSection"]
+[node name="ContentPanelBG" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
+
+[node name="ContentBorder" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="ContentInnerBG" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="PinSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PinHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/PinSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PinIcon" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PinSection/PinHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 28
+text = "🔑"
+
+[node name="PinLabel" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PinSection/PinHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
 text = "PIN: 123456"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="PinDescription" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PinSection"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "Je bent uitgenodigd om deel te nemen aan deze sessie"
+horizontal_alignment = 1
 
-[node name="StatusSection" type="VBoxContainer" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 5
 
-[node name="WaitingLabel" type="Label" parent="VBoxContainer/StatusSection"]
+[node name="StatusSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StatusIcon" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/StatusSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 32
+text = "⚡"
+horizontal_alignment = 1
+
+[node name="WaitingLabel" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/StatusSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
 text = "Verbinding maken met sessie..."
 horizontal_alignment = 1
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 5
 
-[node name="JoinSection" type="VBoxContainer" parent="VBoxContainer"]
+[node name="JoinSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="PlayerNameInput" type="LineEdit" parent="VBoxContainer/JoinSection"]
+[node name="JoinHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
 layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerIcon" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection/JoinHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "👤"
+
+[node name="JoinLabel" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection/JoinHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 18
+text = "Jouw Speler Naam"
+vertical_alignment = 1
+
+[node name="PlayerNameInput" type="LineEdit" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 16
 placeholder_text = "Voer je naam in..."
 alignment = 1
 editable = false
 
-[node name="JoinButton" type="Button" parent="VBoxContainer/JoinSection"]
+[node name="NameHint" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "💡 Kies een naam die andere spelers kunnen herkennen"
+horizontal_alignment = 1
+
+[node name="JoinButton" type="Button" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
+custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 18
 disabled = true
-text = "Deelnemen"
+text = "🚪 Deelnemen aan Sessie"
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 5
 
-[node name="PlayersSection" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PlayersLabel" type="Label" parent="VBoxContainer/PlayersSection"]
-layout_mode = 2
-text = "Spelers in Sessie:"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PlayersSection"]
+[node name="PlayersSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 15
 
-[node name="PlayersList" type="VBoxContainer" parent="VBoxContainer/PlayersSection/ScrollContainer"]
+[node name="PlayersHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayersIcon" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/PlayersHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 20
+text = "👥"
+
+[node name="PlayersLabel" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/PlayersHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 16
+text = "Spelers in Sessie:"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayersList" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8

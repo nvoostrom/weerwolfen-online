@@ -18,107 +18,323 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1, 0.15, 0.3, 1)
+color = Color(0.05, 0.08, 0.15, 1)
+
+[node name="BackgroundGradient" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.25, 0.8)
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 60.0
+offset_bottom = 80.0
 grow_horizontal = 2
+theme_override_constants/separation = 15
+
+[node name="TopBarBG" type="ColorRect" parent="TopBar"]
+z_index = -1
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 0.9)
 
 [node name="BackButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
 text = "← Terug"
 
-[node name="HSeparator" type="HSeparator" parent="TopBar"]
-modulate = Color(1, 1, 1, 0)
+[node name="TitleContainer" type="VBoxContainer" parent="TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="TitleLabel" type="Label" parent="TopBar/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 24
+text = "Nieuwe Sessie Aanmaken"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SubtitleLabel" type="Label" parent="TopBar/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Configureer je weerwolvenspel"
+horizontal_alignment = 1
 
 [node name="CreateButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(180, 50)
 layout_mode = 2
-text = "Sessie Aanmaken"
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "🎮 Sessie Aanmaken"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="MainContainer" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 60.0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = -20.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="ContentPanel" type="Panel" parent="MainContainer"]
+custom_minimum_size = Vector2(600, 500)
+layout_mode = 2
+
+[node name="ContentPanelBG" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
+
+[node name="ContentBorder" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="ContentInnerBG" type="ColorRect" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/ContentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 30
 
-[node name="PlayerSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="PlayerSection" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 15
 
-[node name="PlayerSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/PlayerSection"]
+[node name="PlayerSectionHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection"]
 layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerIcon" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection/PlayerSectionHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "👥"
+
+[node name="PlayerSectionLabel" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection/PlayerSectionHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 20
 text = "Aantal Spelers"
+vertical_alignment = 1
 
-[node name="PlayerCountSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/PlayerSection"]
+[node name="PlayerCountContainer" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 15
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="RolesSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="RolesSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/RolesSection"]
-layout_mode = 2
-text = "Rollen"
-
-[node name="RolesContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/RolesSection"]
-layout_mode = 2
-
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="RulesSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="RulesSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection"]
-layout_mode = 2
-text = "Spelregels"
-
-[node name="RulesContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection"]
-layout_mode = 2
-
-[node name="DiscussionTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+[node name="PlayerCountLabel" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection/PlayerCountContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Discussie Tijd:"
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Maximaal aantal spelers:"
+vertical_alignment = 1
 
-[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+[node name="PlayerCountSpinner" type="SpinBox" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection/PlayerCountContainer"]
+custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 
-[node name="VotingTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+[node name="PlayerCountHint" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "💡 Minimaal 4 spelers vereist voor het spel"
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+[node name="HSeparator" type="HSeparator" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="RolesSection" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="RolesSectionHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RolesIcon" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection/RolesSectionHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "🎭"
+
+[node name="RolesSectionLabel" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection/RolesSectionHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Stem Tijd:"
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 20
+text = "Beschikbare Rollen"
+vertical_alignment = 1
 
-[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+[node name="RolesContainer" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
-[node name="NightTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+[node name="RolesHint" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "⚠️ Meer rollen komen beschikbaar in toekomstige updates"
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="RulesSection" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="RulesSectionHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RulesIcon" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesSectionHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "⚖️"
+
+[node name="RulesSectionLabel" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesSectionHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Nacht Tijd:"
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 20
+text = "Spelregels & Timing"
+vertical_alignment = 1
 
-[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+[node name="RulesContainer" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection"]
 layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="DiscussionTime" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DiscussionHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime/DiscussionHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "💬 Discussie Tijd:"
+vertical_alignment = 1
+
+[node name="TimeSpinner" type="SpinBox" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime/DiscussionHeader"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+
+[node name="DiscussionHint" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "Tijd voor spelers om verdachten te bespreken"
+
+[node name="VotingTime" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VotingHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime/VotingHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "🗳️ Stem Tijd:"
+vertical_alignment = 1
+
+[node name="TimeSpinner" type="SpinBox" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime/VotingHeader"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+
+[node name="VotingHint" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "Tijd voor de finale stemming"
+
+[node name="NightTime" type="VBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NightHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime/NightHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "🌙 Nacht Tijd:"
+vertical_alignment = 1
+
+[node name="TimeSpinner" type="SpinBox" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime/NightHeader"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+
+[node name="NightHint" type="Label" parent="MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "Tijd voor weerwolven om hun actie uit te voeren"

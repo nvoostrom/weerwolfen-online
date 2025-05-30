@@ -19,60 +19,103 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.5)
+color = Color(0, 0, 0, 0.7)
 
-[node name="ModalContent" type="Panel" parent="ModalBackground"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -150.0
-offset_right = 200.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ModalContentBG" type="ColorRect" parent="ModalBackground/ModalContent"]
+[node name="CenterContainer" type="CenterContainer" parent="ModalBackground"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.15, 0.2, 0.35, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent"]
+[node name="ModalContent" type="Panel" parent="ModalBackground/CenterContainer"]
+custom_minimum_size = Vector2(450, 400)
+layout_mode = 2
+
+[node name="ModalContentBG" type="ColorRect" parent="ModalBackground/CenterContainer/ModalContent"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
 
-[node name="TopBar" type="HBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer"]
+[node name="ModalBorder" type="ColorRect" parent="ModalBackground/CenterContainer/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="ModalInnerBG" type="ColorRect" parent="ModalBackground/CenterContainer/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 25.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TopBar" type="HBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer"]
 layout_mode = 2
 
-[node name="CloseButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/TopBar"]
+[node name="ModalIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/TopBar"]
 layout_mode = 2
-size_flags_horizontal = 10
-text = "X"
+theme_override_font_sizes/font_size = 24
+text = "🏰"
 
-[node name="TitleLabel" type="Label" parent="ModalBackground/ModalContent/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/TopBar"]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/TopBar"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "✕"
+
+[node name="TitleLabel" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 28
 text = "Weerwolven Online"
+horizontal_alignment = 1
 
-[node name="ContentContainer" type="Control" parent="ModalBackground/ModalContent/VBoxContainer"]
+[node name="ContentContainer" type="Control" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InitialOptions" type="Control" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer"]
+[node name="InitialOptions" type="Control" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,32 +123,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions"]
+[node name="CenterContainer" type="CenterContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = -40.0
-offset_right = 80.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="JoinButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer"]
 layout_mode = 2
-text = "Deelnemen"
+theme_override_constants/separation = 25
 
-[node name="HSeparator" type="HSeparator" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+[node name="DescriptionLabel" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "Kies hoe je wilt beginnen:"
+horizontal_alignment = 1
 
-[node name="CreateButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Aanmaken"
+theme_override_constants/separation = 15
 
-[node name="PinEntry" type="Control" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer"]
+[node name="JoinButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "🚪 Deelnemen aan Sessie"
+
+[node name="CreateButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚡ Nieuwe Sessie Aanmaken"
+
+[node name="PinEntry" type="Control" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -114,35 +169,61 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry"]
+[node name="CenterContainer" type="CenterContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -60.0
-offset_right = 100.0
-offset_bottom = 60.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer"]
 layout_mode = 2
-text = "Voer de PIN van de sessie in:"
+theme_override_constants/separation = 20
+
+[node name="PinSection" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PinIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "🔑"
 horizontal_alignment = 1
 
-[node name="PinInput" type="LineEdit" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+[node name="Label" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Voer de sessie PIN in:"
+horizontal_alignment = 1
+
+[node name="PinInput" type="LineEdit" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_font_sizes/font_size = 24
 placeholder_text = "123456"
 alignment = 1
 max_length = 6
 
-[node name="ConfirmButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+[node name="ButtonsSection" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Bevestigen"
+theme_override_constants/separation = 10
 
-[node name="BackButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/ButtonsSection"]
+custom_minimum_size = Vector2(200, 45)
 layout_mode = 2
-text = "Terug"
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "✓ Bevestigen"
+
+[node name="BackButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/ButtonsSection"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 14
+text = "← Terug"

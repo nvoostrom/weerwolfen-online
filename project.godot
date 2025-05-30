@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 GameData="*res://scripts/GameData.gd"
 NetworkManager="*res://scripts/NetworkManager.gd"
+CustomDialog="*res://scripts/CustomDialog.gd"
+DialogHelper="*res://scripts/DialogHelper.gd"
 
 [rendering]
 

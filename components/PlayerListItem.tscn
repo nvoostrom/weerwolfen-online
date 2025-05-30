@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://deu4udvlef3gy" path="res://scripts/PlayerListItem.gd" id="1_4j8mx"]
 
 [node name="PlayerListItem" type="Control"]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 60.0
+offset_bottom = 80.0
 grow_horizontal = 2
 script = ExtResource("1_4j8mx")
 
@@ -19,6 +19,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="PanelBG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.88, 0.82, 0.7, 1)
+
+[node name="PanelBorder" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.6, 0.4, 0.25, 1)
+
+[node name="PanelInner" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.92, 0.85, 1)
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -26,35 +64,61 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 15
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="PlayerNameLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="PlayerAvatar" type="Label" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "👤"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerInfo" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="PlayerNameLabel" type="Label" parent="MarginContainer/HBoxContainer/PlayerInfo"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Speler Naam"
 vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="HostBadge" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="PlayerStatusLabel" type="Label" parent="MarginContainer/HBoxContainer/PlayerInfo"]
+modulate = Color(0.5, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Dorpsbewoner"
+
+[node name="BadgesContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="HostBadge" type="Label" parent="MarginContainer/HBoxContainer/BadgesContainer"]
 visible = false
 modulate = Color(1, 0.8, 0, 1)
+custom_minimum_size = Vector2(70, 25)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "HOST"
+theme_override_font_sizes/font_size = 10
+text = "👑 HOST"
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ReadyIndicator" type="Label" parent="MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(30, 0)
+[node name="ReadyIndicator" type="Label" parent="MarginContainer/HBoxContainer/BadgesContainer"]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 text = "○"
-horizontal_alignment = 2
+horizontal_alignment = 1
 vertical_alignment = 1

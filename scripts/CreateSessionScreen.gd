@@ -2,11 +2,11 @@ extends Control
 
 @onready var back_button = $TopBar/BackButton
 @onready var create_button = $TopBar/CreateButton
-@onready var player_count_spinner = $ScrollContainer/VBoxContainer/PlayerSection/PlayerCountSpinner
-@onready var roles_container = $ScrollContainer/VBoxContainer/RolesSection/RolesContainer
-@onready var discussion_time_spinner = $ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime/TimeSpinner
-@onready var voting_time_spinner = $ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime/TimeSpinner
-@onready var night_time_spinner = $ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime/TimeSpinner
+@onready var player_count_spinner = $MainContainer/ContentPanel/ScrollContainer/VBoxContainer/PlayerSection/PlayerCountContainer/PlayerCountSpinner
+@onready var roles_container = $MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RolesSection/RolesContainer
+@onready var discussion_time_spinner = $MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime/DiscussionHeader/TimeSpinner
+@onready var voting_time_spinner = $MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime/VotingHeader/TimeSpinner
+@onready var night_time_spinner = $MainContainer/ContentPanel/ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime/NightHeader/TimeSpinner
 
 var selected_roles: Array[String] = ["Burger"]
 var is_creating_session: bool = false
@@ -23,6 +23,38 @@ func _ready():
 	NetworkManager.session_created.connect(_on_session_created)
 	NetworkManager.error_received.connect(_on_network_error)
 	NetworkManager.connection_error.connect(_on_connection_error)
+	
+	# Add visual enhancements
+	_setup_ui_enhancements()
+
+func _setup_ui_enhancements():
+	# Animate content panel entrance
+	var content_panel = $MainContainer/ContentPanel
+	content_panel.modulate.a = 0.0
+	content_panel.position.y += 30
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(content_panel, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	tween.tween_property(content_panel, "position:y", content_panel.position.y - 30, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	
+	# Add hover effects to buttons
+	_setup_button_effects()
+
+func _setup_button_effects():
+	var buttons = [back_button, create_button]
+	
+	for button in buttons:
+		button.mouse_entered.connect(_on_button_hover.bind(button))
+		button.mouse_exited.connect(_on_button_unhover.bind(button))
+
+func _on_button_hover(button: Button):
+	var tween = create_tween()
+	tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+
+func _on_button_unhover(button: Button):
+	var tween = create_tween()
+	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 
 func setup_player_count_spinner():
 	player_count_spinner.min_value = 4
@@ -34,12 +66,22 @@ func setup_roles_section():
 	# For now, only show Burger role as requested
 	var available_roles = GameData.get_available_roles()
 	for role in available_roles:
+		var role_container = HBoxContainer.new()
+		role_container.add_theme_constant_override("separation", 10)
+		
 		var checkbox = CheckBox.new()
 		checkbox.text = role
 		checkbox.button_pressed = true  # Burger is selected by default
 		checkbox.disabled = true  # Disable for now since only Burger is implemented
 		checkbox.toggled.connect(_on_role_toggled.bind(role))
-		roles_container.add_child(checkbox)
+		
+		var role_icon = Label.new()
+		role_icon.text = "👤"  # Generic villager icon
+		role_icon.add_theme_font_size_override("font_size", 16)
+		
+		role_container.add_child(role_icon)
+		role_container.add_child(checkbox)
+		roles_container.add_child(role_container)
 
 func setup_rules_spinners():
 	# Discussion time (5 minutes default)
@@ -71,7 +113,10 @@ func _on_role_toggled(role: String, pressed: bool):
 
 func _on_back_button_pressed():
 	if not is_creating_session:
-		get_tree().change_scene_to_file("res://scenes/MainScreen.tscn")
+		# Smooth transition back
+		var tween = create_tween()
+		tween.tween_property(self, "modulate:a", 0.0, 0.3)
+		tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/MainScreen.tscn"))
 
 func _on_create_button_pressed():
 	if is_creating_session:
@@ -87,55 +132,38 @@ func _on_create_button_pressed():
 	
 	# Validate settings
 	if selected_roles.is_empty():
-		show_error("Selecteer minimaal één rol!")
+		show_error("Configuratie Fout", "Selecteer minimaal één rol!")
 		return
 	
 	if player_count < 4:
-		show_error("Minimum 4 spelers vereist!")
+		show_error("Configuratie Fout", "Minimum 4 spelers vereist!")
 		return
 	
 	# Ask for host name
 	show_host_name_dialog(player_count, rules)
 
 func show_host_name_dialog(player_count: int, rules: Dictionary):
-	var dialog = AcceptDialog.new()
-	dialog.title = "Voer je naam in"
-	dialog.dialog_text = "Voer je naam in als host:"
+	var dialog = DialogHelper.show_input(
+		self,
+		"Welkom, Spelleider!",
+		"Voer je naam in als host van deze sessie.\nJe zult de sessie beheren en het spel starten.",
+		"Je naam als spelleider...",
+		"Host"
+	)
 	
-	# Add line edit for name input
-	var line_edit = LineEdit.new()
-	line_edit.placeholder_text = "Je naam..."
-	line_edit.text = "Host"
-	
-	var vbox = VBoxContainer.new()
-	var label = Label.new()
-	label.text = "Naam:"
-	vbox.add_child(label)
-	vbox.add_child(line_edit)
-	
-	dialog.add_child(vbox)
-	add_child(dialog)
-	
-	dialog.confirmed.connect(_on_host_name_confirmed.bind(line_edit, player_count, rules, dialog))
-	dialog.popup_centered()
-	line_edit.grab_focus()
+	dialog.confirmed.connect(_on_host_name_confirmed.bind(dialog, player_count, rules))
 
-func _on_host_name_confirmed(line_edit: LineEdit, player_count: int, rules: Dictionary, dialog: AcceptDialog):
-	var host_name = line_edit.text.strip_edges()
+func _on_host_name_confirmed(dialog, player_count: int, rules: Dictionary):
+	var host_name = dialog.get_input_text()
 	if host_name.is_empty():
 		host_name = "Host"
-	
-	dialog.queue_free()
 	
 	# Check if already creating a session
 	if is_creating_session:
 		return
 	
-	# Show loading state
-	is_creating_session = true
-	create_button.text = "Sessie wordt aangemaakt..."
-	create_button.disabled = true
-	back_button.disabled = true
+	# Show loading state with animation
+	_show_creating_state()
 	
 	# Small delay to ensure UI updates
 	await get_tree().process_frame
@@ -143,44 +171,68 @@ func _on_host_name_confirmed(line_edit: LineEdit, player_count: int, rules: Dict
 	# Create the session via network
 	GameData.create_new_session(player_count, selected_roles, rules, host_name)
 
+func _show_creating_state():
+	is_creating_session = true
+	create_button.text = "🔄 Sessie wordt aangemaakt..."
+	create_button.disabled = true
+	back_button.disabled = true
+	
+	# Add pulsing animation
+	var tween = create_tween()
+	tween.set_loops()
+	tween.tween_property(create_button, "modulate:a", 0.7, 0.5)
+	tween.tween_property(create_button, "modulate:a", 1.0, 0.5)
+
 func _on_session_created(pin: String, player_id: String):
 	print("Session created successfully with PIN: ", pin)
 	
 	# Reset UI state
-	is_creating_session = false
-	create_button.disabled = false
-	back_button.disabled = false
-	create_button.text = "Sessie Aanmaken"
+	_reset_create_state()
 	
-	# Small delay to ensure everything is ready
-	await get_tree().create_timer(0.1).timeout
+	# Show success feedback
+	create_button.text = "✅ Sessie aangemaakt!"
+	create_button.modulate = Color.GREEN
 	
-	# Navigate to session screen
-	get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn")
+	# Show success dialog
+	var success_dialog = DialogHelper.show_info(
+		self,
+		"Sessie Aangemaakt!",
+		"Je sessie is succesvol aangemaakt met PIN: " + pin + "\n\nJe wordt nu doorgestuurd naar de wachtruimte."
+	)
+	
+	success_dialog.confirmed.connect(_navigate_to_session)
+
+func _navigate_to_session():
+	# Small delay then navigate
+	await get_tree().create_timer(0.2).timeout
+	
+	# Smooth transition to session screen
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.3)
+	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn"))
 
 func _on_network_error(error_message: String):
 	print("Network error in CreateSessionScreen: ", error_message)
-	show_error("Network fout: " + error_message)
-	reset_create_button()
+	show_error("Netwerk Fout", "Er is een probleem opgetreden met de netwerkverbinding:\n\n" + error_message + "\n\nProbeer het opnieuw.")
+	_reset_create_state()
 
 func _on_connection_error(error_message: String):
 	print("Connection error in CreateSessionScreen: ", error_message)
-	show_error("Verbindingsfout: " + error_message)
-	reset_create_button()
+	show_error("Verbindingsfout", "Kan geen verbinding maken met de server:\n\n" + error_message + "\n\nControleer je internetverbinding en probeer opnieuw.")
+	_reset_create_state()
 
-func reset_create_button():
+func _reset_create_state():
 	is_creating_session = false
 	create_button.disabled = false
 	back_button.disabled = false
-	create_button.text = "Sessie Aanmaken"
+	create_button.text = "🎮 Sessie Aanmaken"
+	create_button.modulate = Color.WHITE
 
-func show_error(message: String):
-	var dialog = AcceptDialog.new()
-	dialog.dialog_text = message
-	dialog.title = "Fout"
-	add_child(dialog)
-	dialog.popup_centered()
-	dialog.confirmed.connect(dialog.queue_free)
+func show_error(title: String, message: String):
+	DialogHelper.show_error(self, title, message)
+
+func show_info(title: String, message: String):
+	DialogHelper.show_info(self, title, message)
 
 func _exit_tree():
 	# Disconnect from network events

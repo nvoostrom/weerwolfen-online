@@ -18,35 +18,73 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1, 0.15, 0.3, 1)
+mouse_filter = 2
+color = Color(0.05, 0.08, 0.15, 1)
+
+[node name="BackgroundGradient" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.1, 0.15, 0.25, 0.8)
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 60.0
+offset_bottom = 80.0
 grow_horizontal = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
+
+[node name="TopBarBG" type="ColorRect" parent="TopBar"]
+z_index = -1
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 0.9)
 
 [node name="BackButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
-text = "← Terug"
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 16
+text = "← Verlaten"
 
-[node name="HSeparator" type="HSeparator" parent="TopBar"]
-modulate = Color(1, 1, 1, 0)
+[node name="TitleContainer" type="VBoxContainer" parent="TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="TitleLabel" type="Label" parent="TopBar/TitleContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Wachtruimte"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SubtitleLabel" type="Label" parent="TopBar/TitleContainer"]
+modulate = Color(0.9, 0.8, 0.7, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Wacht tot alle spelers zijn aangesloten"
+horizontal_alignment = 1
 
 [node name="StartGameButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
-text = "Start Spel"
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 16
+text = "🎮 Start Spel"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 60.0
+offset_top = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -54,49 +92,253 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="SessionInfo" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="LeftPanel" type="Panel" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="LeftPanelBG" type="ColorRect" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
+
+[node name="LeftPanelBorder" type="ColorRect" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="LeftPanelInner" type="ColorRect" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="SessionInfo" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="SessionHeader" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PinDisplay" type="Label" parent="MarginContainer/VBoxContainer/SessionInfo"]
+[node name="SessionIcon" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/SessionHeader"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "🏰"
+
+[node name="SessionLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/SessionHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "Sessie Informatie"
+vertical_alignment = 1
+
+[node name="PinContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PinDisplay" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PinContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "PIN: 000000"
 horizontal_alignment = 1
 
-[node name="PlayersCount" type="Label" parent="MarginContainer/VBoxContainer/SessionInfo"]
+[node name="PinDescription" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PinContainer"]
+modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
+text = "Deel deze PIN met vrienden"
+horizontal_alignment = 1
+
+[node name="SharePinButton" type="Button" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "📋 PIN Kopiëren"
+
+[node name="PlayersCountContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PlayersCount" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PlayersCountContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "0/8 Spelers"
 horizontal_alignment = 1
 
-[node name="SharePinButton" type="Button" parent="MarginContainer/VBoxContainer/SessionInfo"]
+[node name="PlayersDescription" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PlayersCountContainer"]
+modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
-size_flags_horizontal = 4
-text = "PIN Delen"
+theme_override_font_sizes/font_size = 11
+text = "Minimaal 4 spelers vereist"
+horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="GameInfoSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 5
 
-[node name="PlayersSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="GameInfo" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="GameInfoHeader" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo"]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PlayersLabel" type="Label" parent="MarginContainer/VBoxContainer/PlayersSection"]
+[node name="GameInfoIcon" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoHeader"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Spelers in Sessie:"
+theme_override_font_sizes/font_size = 20
+text = "ℹ️"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PlayersSection"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PlayersList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PlayersSection/ScrollContainer"]
+[node name="GameInfoLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Spel Informatie"
+vertical_alignment = 1
+
+[node name="GameInfoContent" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HowToPlay" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoContent"]
+modulate = Color(0.5, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🎯 Doel: Vind de weerwolven!"
+autowrap_mode = 2
+
+[node name="GamePhases" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoContent"]
+modulate = Color(0.5, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🌅 Dag: Discussie en stemmen
+🌙 Nacht: Weerwolven handelen"
+autowrap_mode = 2
+
+[node name="RightPanel" type="Panel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightPanelBG" type="ColorRect" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.92, 0.87, 0.75, 1)
+
+[node name="RightPanelBorder" type="ColorRect" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.45, 0.3, 1)
+
+[node name="RightPanelInner" type="ColorRect" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.95, 0.88, 1)
+
+[node name="PlayersSection" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="PlayersHeader" type="HBoxContainer" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection"]
+layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="PlayersIcon" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "👥"
+
+[node name="PlayersLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "Dorpsbewoners"
+vertical_alignment = 1
+
+[node name="ReadyStatus" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
+modulate = Color(0.5, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "✓ = Klaar"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayersList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
