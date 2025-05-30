@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="Weerwolfen-Online"
+run/main_scene="uid://btxqn7qp8xo2w"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameData="*res://scripts/GameData.gd"
 
 [rendering]
 

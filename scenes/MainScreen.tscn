@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://btxqn7qp8xo2w"]
+
+[ext_resource type="Script" uid="uid://cdxlvqjoptuww" path="res://scripts/MainScreen.gd" id="1_0h7kj"]
+[ext_resource type="PackedScene" uid="uid://c8jn2x1bh7xap" path="res://components/GameModal.tscn" id="2_9k7xm"]
+
+[node name="MainScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0h7kj")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.3, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Weerwolven Online"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Spel Starten"
+
+[node name="GameModal" parent="." instance=ExtResource("2_9k7xm")]
+layout_mode = 1

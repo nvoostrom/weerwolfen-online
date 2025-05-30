@@ -1,0 +1,100 @@
+[gd_scene load_steps=2 format=3 uid="uid://caxm8q7p5n2k1"]
+
+[ext_resource type="Script" uid="uid://d0se8ghmjb85g" path="res://scripts/JoinSessionScreen.gd" id="1_8k3mx"]
+
+[node name="JoinSessionScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8k3mx")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.3, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="BackButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "← Terug"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PinSection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PinLabel" type="Label" parent="VBoxContainer/PinSection"]
+layout_mode = 2
+text = "PIN: 123456"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="StatusSection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="WaitingLabel" type="Label" parent="VBoxContainer/StatusSection"]
+layout_mode = 2
+text = "Verbinding maken met sessie..."
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="JoinSection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayerNameInput" type="LineEdit" parent="VBoxContainer/JoinSection"]
+layout_mode = 2
+placeholder_text = "Voer je naam in..."
+alignment = 1
+editable = false
+
+[node name="JoinButton" type="Button" parent="VBoxContainer/JoinSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Deelnemen"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayersSection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayersLabel" type="Label" parent="VBoxContainer/PlayersSection"]
+layout_mode = 2
+text = "Spelers in Sessie:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PlayersSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayersList" type="VBoxContainer" parent="VBoxContainer/PlayersSection/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://x403p5rcwin6"]
+
+[ext_resource type="Script" uid="uid://deu4udvlef3gy" path="res://scripts/PlayerListItem.gd" id="1_4j8mx"]
+
+[node name="PlayerListItem" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+script = ExtResource("1_4j8mx")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerNameLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speler Naam"
+vertical_alignment = 1
+
+[node name="HostBadge" type="Label" parent="HBoxContainer"]
+visible = false
+modulate = Color(1, 0.8, 0, 1)
+layout_mode = 2
+text = "HOST"
+vertical_alignment = 1
+
+[node name="ReadyIndicator" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "○"
+vertical_alignment = 1

@@ -1,0 +1,124 @@
+[gd_scene load_steps=2 format=3 uid="uid://ejshodh7wpeu"]
+
+[ext_resource type="Script" uid="uid://cxsi15dki5x5a" path="res://scripts/CreateSessionScreen.gd" id="1_7j9kx"]
+
+[node name="CreateSessionScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7j9kx")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.15, 0.3, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="BackButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "← Terug"
+
+[node name="HSeparator" type="HSeparator" parent="TopBar"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreateButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Sessie Aanmaken"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayerSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayerSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/PlayerSection"]
+layout_mode = 2
+text = "Aantal Spelers"
+
+[node name="PlayerCountSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/PlayerSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RolesSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RolesSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/RolesSection"]
+layout_mode = 2
+text = "Rollen"
+
+[node name="RolesContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/RolesSection"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RulesSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RulesSectionLabel" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection"]
+layout_mode = 2
+text = "Spelregels"
+
+[node name="RulesContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection"]
+layout_mode = 2
+
+[node name="DiscussionTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Discussie Tijd:"
+
+[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/DiscussionTime"]
+layout_mode = 2
+
+[node name="VotingTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stem Tijd:"
+
+[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/VotingTime"]
+layout_mode = 2
+
+[node name="NightTime" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Nacht Tijd:"
+
+[node name="TimeSpinner" type="SpinBox" parent="ScrollContainer/VBoxContainer/RulesSection/RulesContainer/NightTime"]
+layout_mode = 2

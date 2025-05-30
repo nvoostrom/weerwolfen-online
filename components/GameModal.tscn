@@ -1,0 +1,148 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8jn2x1bh7xap"]
+
+[ext_resource type="Script" uid="uid://xhtlses2l101" path="res://scripts/GameModal.gd" id="1_3h8kx"]
+
+[node name="GameModal" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3h8kx")
+
+[node name="ModalBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="ModalContent" type="Panel" parent="ModalBackground"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalContentBG" type="ColorRect" parent="ModalBackground/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.2, 0.35, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "X"
+
+[node name="TitleLabel" type="Label" parent="ModalBackground/ModalContent/VBoxContainer"]
+layout_mode = 2
+text = "Weerwolven Online"
+
+[node name="ContentContainer" type="Control" parent="ModalBackground/ModalContent/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InitialOptions" type="Control" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="JoinButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+layout_mode = 2
+text = "Deelnemen"
+
+[node name="HSeparator" type="HSeparator" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/InitialOptions/VBoxContainer"]
+layout_mode = 2
+text = "Aanmaken"
+
+[node name="PinEntry" type="Control" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -60.0
+offset_right = 100.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+layout_mode = 2
+text = "Voer de PIN van de sessie in:"
+horizontal_alignment = 1
+
+[node name="PinInput" type="LineEdit" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "123456"
+alignment = 1
+max_length = 6
+
+[node name="ConfirmButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+layout_mode = 2
+text = "Bevestigen"
+
+[node name="BackButton" type="Button" parent="ModalBackground/ModalContent/VBoxContainer/ContentContainer/PinEntry/VBoxContainer"]
+layout_mode = 2
+text = "Terug"
