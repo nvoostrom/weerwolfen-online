@@ -49,6 +49,7 @@ color = Color(0.65, 0.45, 0.3, 0.9)
 custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
 theme_override_font_sizes/font_size = 16
 text = "← Verlaten"
 
@@ -60,14 +61,15 @@ theme_override_constants/separation = 5
 
 [node name="TitleLabel" type="Label" parent="TopBar/TitleContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
 theme_override_font_sizes/font_size = 24
 text = "Wachtruimte"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SubtitleLabel" type="Label" parent="TopBar/TitleContainer"]
-modulate = Color(0.9, 0.8, 0.7, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
 theme_override_font_sizes/font_size = 14
 text = "Wacht tot alle spelers zijn aangesloten"
 horizontal_alignment = 1
@@ -76,6 +78,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
 theme_override_font_sizes/font_size = 16
 text = "🎮 Start Spel"
 
@@ -162,12 +165,14 @@ theme_override_constants/separation = 10
 
 [node name="SessionIcon" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/SessionHeader"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 24
 text = "🏰"
 
 [node name="SessionLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/SessionHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 18
 text = "Sessie Informatie"
 vertical_alignment = 1
@@ -178,13 +183,14 @@ theme_override_constants/separation = 8
 
 [node name="PinDisplay" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PinContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 32
 text = "PIN: 000000"
 horizontal_alignment = 1
 
 [node name="PinDescription" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PinContainer"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 12
 text = "Deel deze PIN met vrienden"
 horizontal_alignment = 1
@@ -193,6 +199,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
 theme_override_font_sizes/font_size = 14
 text = "📋 PIN Kopiëren"
 
@@ -202,13 +209,14 @@ theme_override_constants/separation = 8
 
 [node name="PlayersCount" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PlayersCountContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 18
 text = "0/8 Spelers"
 horizontal_alignment = 1
 
 [node name="PlayersDescription" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/SessionInfo/PlayersCountContainer"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 11
 text = "Minimaal 4 spelers vereist"
 horizontal_alignment = 1
@@ -227,12 +235,14 @@ theme_override_constants/separation = 10
 
 [node name="GameInfoIcon" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoHeader"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 20
 text = "ℹ️"
 
 [node name="GameInfoLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 16
 text = "Spel Informatie"
 vertical_alignment = 1
@@ -242,15 +252,15 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="HowToPlay" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoContent"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 12
 text = "🎯 Doel: Vind de weerwolven!"
 autowrap_mode = 2
 
 [node name="GamePhases" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel/VBoxContainer/GameInfo/GameInfoContent"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 12
 text = "🌅 Dag: Discussie en stemmen
 🌙 Nacht: Weerwolven handelen"
@@ -317,19 +327,21 @@ theme_override_constants/separation = 10
 
 [node name="PlayersIcon" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 24
 text = "👥"
 
 [node name="PlayersLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 18
 text = "Dorpsbewoners"
 vertical_alignment = 1
 
 [node name="ReadyStatus" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/PlayersSection/PlayersHeader"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 12
 text = "✓ = Klaar"
 vertical_alignment = 1

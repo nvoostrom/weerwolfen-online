@@ -76,6 +76,7 @@ theme_override_constants/separation = 15
 [node name="PlayerAvatar" type="Label" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 28
 text = "👤"
 horizontal_alignment = 1
@@ -89,14 +90,15 @@ theme_override_constants/separation = 2
 
 [node name="PlayerNameLabel" type="Label" parent="MarginContainer/HBoxContainer/PlayerInfo"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 16
 text = "Speler Naam"
 vertical_alignment = 1
 text_overrun_behavior = 3
 
 [node name="PlayerStatusLabel" type="Label" parent="MarginContainer/HBoxContainer/PlayerInfo"]
-modulate = Color(0.5, 0.4, 0.3, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 11
 text = "Dorpsbewoner"
 
@@ -107,9 +109,9 @@ theme_override_constants/separation = 8
 
 [node name="HostBadge" type="Label" parent="MarginContainer/HBoxContainer/BadgesContainer"]
 visible = false
-modulate = Color(1, 0.8, 0, 1)
 custom_minimum_size = Vector2(70, 25)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
 theme_override_font_sizes/font_size = 10
 text = "👑 HOST"
 horizontal_alignment = 1
@@ -118,6 +120,7 @@ vertical_alignment = 1
 [node name="ReadyIndicator" type="Label" parent="MarginContainer/HBoxContainer/BadgesContainer"]
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 20
 text = "○"
 horizontal_alignment = 1

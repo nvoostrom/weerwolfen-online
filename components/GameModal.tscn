@@ -89,6 +89,7 @@ layout_mode = 2
 
 [node name="ModalIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/TopBar"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 24
 text = "🏰"
 
@@ -187,6 +188,7 @@ theme_override_constants/separation = 15
 
 [node name="PinIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
 theme_override_font_sizes/font_size = 32
 text = "🔑"
 horizontal_alignment = 1
