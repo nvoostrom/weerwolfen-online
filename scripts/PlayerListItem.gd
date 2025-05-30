@@ -1,8 +1,8 @@
 extends Control
 
-@onready var player_name_label = $HBoxContainer/PlayerNameLabel
-@onready var host_badge = $HBoxContainer/HostBadge
-@onready var ready_indicator = $HBoxContainer/ReadyIndicator
+@onready var player_name_label = $MarginContainer/HBoxContainer/PlayerNameLabel
+@onready var host_badge = $MarginContainer/HBoxContainer/HostBadge
+@onready var ready_indicator = $MarginContainer/HBoxContainer/ReadyIndicator
 
 var player_name: String = ""
 var is_host: bool = false

@@ -14,52 +14,121 @@ var game_rules: Dictionary = {
 	"night_time": 60         # 1 minute in seconds
 }
 
-# Players in session
-var players: Array[Dictionary] = []
+# Players in session (now managed by server)
+var players: Array = []  # Changed from Array[Dictionary] to Array
+var current_player_name: String = ""
+
+# Network reference
+var network_manager: Node
 
 func _ready():
-	# Add autoload to project settings if not already there
-	pass
+	# Get reference to NetworkManager
+	network_manager = get_node("/root/NetworkManager")
+	
+	# Connect to network events
+	if network_manager:
+		network_manager.session_created.connect(_on_session_created)
+		network_manager.session_joined.connect(_on_session_joined)
+		network_manager.player_list_updated.connect(_on_player_list_updated)
+		network_manager.game_started.connect(_on_game_started)
+		network_manager.error_received.connect(_on_network_error)
 
-func generate_session_pin() -> String:
-	var pin = ""
-	for i in range(6):
-		pin += str(randi() % 10)
+func _on_session_created(pin: String, player_id: String):
 	current_session_pin = pin
-	return pin
+	is_host = true
+	print("GameData: Session created with PIN: ", pin)
 
-func create_new_session(player_count: int, roles: Array[String], rules: Dictionary):
+func _on_session_joined(pin: String, player_id: String, player_data: Dictionary):
+	current_session_pin = pin
+	is_host = player_data.get("isHost", false)
+	current_player_name = player_data.get("name", "")
+	print("GameData: Joined session: ", pin)
+
+func _on_player_list_updated(new_players: Array):
+	print("GameData: Player list updated with ", new_players.size(), " players")
+	# Convert to ensure compatibility
+	players.clear()
+	for player in new_players:
+		if player is Dictionary:
+			players.append(player)
+	print("GameData: Player list now has ", players.size(), " players")
+
+# Helper method to get current players for UI
+func get_current_players() -> Array:
+	return players
+
+func _on_game_started():
+	print("Game has started!")
+
+func _on_network_error(error_message: String):
+	print("Network error: ", error_message)
+
+func create_new_session(player_count: int, roles: Array[String], rules: Dictionary, host_name: String = ""):
 	max_players = player_count
 	selected_roles = roles
 	game_rules = rules
-	is_host = true
-	players.clear()
-	generate_session_pin()
-
-func add_player(player_name: String) -> bool:
-	if players.size() >= max_players:
-		return false
 	
-	var new_player = {
-		"name": player_name,
-		"id": generate_player_id(),
-		"is_ready": false,
-		"role": ""
-	}
-	players.append(new_player)
-	return true
+	# Use a default name if none provided
+	if host_name.is_empty():
+		host_name = "Host"
+	
+	current_player_name = host_name
+	
+	# Create session via network
+	if network_manager:
+		var settings = {
+			"maxPlayers": player_count,
+			"roles": roles,
+			"rules": rules
+		}
+		network_manager.create_session(settings, host_name)
+	else:
+		print("NetworkManager not available!")
 
-func generate_player_id() -> String:
-	return "player_" + str(Time.get_unix_time_from_system()) + "_" + str(randi() % 1000)
+func join_session_with_name(pin: String, player_name: String):
+	join_pin = pin
+	current_player_name = player_name
+	
+	if network_manager:
+		network_manager.join_session(pin, player_name)
+	else:
+		print("NetworkManager not available!")
 
-func get_available_roles() -> Array[String]:
-	# For now, only return Burger as requested
-	return ["Burger"]
+func set_player_ready(ready: bool):
+	if network_manager:
+		network_manager.set_player_ready(ready)
 
-func reset_session():
+func start_game():
+	if network_manager and is_host:
+		network_manager.start_game()
+
+func leave_session():
+	if network_manager:
+		network_manager.leave_session()
+	
+	# Reset local data
 	current_session_pin = ""
 	join_pin = ""
 	is_host = false
 	players.clear()
-	max_players = 8
-	selected_roles = ["Burger"]
+	current_player_name = ""
+
+# Legacy methods for compatibility
+func generate_session_pin() -> String:
+	# This is now handled by the server
+	return current_session_pin
+
+func add_player(player_name: String) -> bool:
+	# This is now handled by the server via join_session_with_name
+	join_session_with_name(join_pin, player_name)
+	return true
+
+func generate_player_id() -> String:
+	# This is now handled by the server
+	return network_manager.get_current_player_id() if network_manager else ""
+
+func get_available_roles() -> Array[String]:
+	return ["Burger"]
+
+func reset_session():
+	leave_session()

@@ -3,10 +3,11 @@
 [ext_resource type="Script" uid="uid://deu4udvlef3gy" path="res://scripts/PlayerListItem.gd" id="1_4j8mx"]
 
 [node name="PlayerListItem" type="Control"]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 40.0
+offset_bottom = 60.0
 grow_horizontal = 2
 script = ExtResource("1_4j8mx")
 
@@ -18,32 +19,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 5.0
-offset_right = -10.0
-offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
 
-[node name="PlayerNameLabel" type="Label" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PlayerNameLabel" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text = "Speler Naam"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
-[node name="HostBadge" type="Label" parent="HBoxContainer"]
+[node name="HostBadge" type="Label" parent="MarginContainer/HBoxContainer"]
 visible = false
 modulate = Color(1, 0.8, 0, 1)
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "HOST"
 vertical_alignment = 1
 
-[node name="ReadyIndicator" type="Label" parent="HBoxContainer"]
+[node name="ReadyIndicator" type="Label" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "○"
+horizontal_alignment = 2
 vertical_alignment = 1
