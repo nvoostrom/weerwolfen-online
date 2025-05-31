@@ -17,7 +17,8 @@ signal connection_error(error: String)
 signal session_created(pin: String, player_id: String)
 signal session_joined(pin: String, player_id: String, player_data: Dictionary)
 signal player_list_updated(players: Array)
-signal game_started
+signal game_started(your_role: String)
+signal session_closed(reason: String)
 signal error_received(message: String)
 signal pin_validation_result(pin: String, valid: bool, info: Dictionary)
 
@@ -67,7 +68,6 @@ func _process(_delta):
 				if is_connecting:
 					is_connecting = false
 					connection_attempts = 0
-					print("Connected to server successfully!")
 					connected_to_server.emit()
 					ping_timer.start()
 				
@@ -87,7 +87,6 @@ func _process(_delta):
 					_handle_connection_closed()
 
 func _handle_connection_state_change(old_state: int, new_state: int):
-	print("Connection state changed: ", _state_to_string(old_state), " -> ", _state_to_string(new_state))
 	last_connection_state = old_state
 
 func _state_to_string(state: int) -> String:
@@ -109,29 +108,23 @@ func _handle_connection_closed():
 	if ping_timer and not ping_timer.is_stopped():
 		ping_timer.stop()
 	
-	print("Connection closed")
 	disconnected_from_server.emit()
 	
 	# Only attempt reconnection if we had a successful connection before
 	if connection_attempts > 0 and connection_attempts < max_connection_attempts:
-		print("Attempting to reconnect in 3 seconds... (attempt ", connection_attempts + 1, "/", max_connection_attempts, ")")
 		reconnect_timer.start()
 	elif connection_attempts >= max_connection_attempts:
-		print("Max connection attempts reached")
 		connection_error.emit("Could not connect to server after multiple attempts")
 
 func connect_to_server() -> void:
 	# Don't attempt connection if already connected or connecting
 	if connection_status == WebSocketPeer.STATE_OPEN:
-		print("Already connected to server")
 		connected_to_server.emit()
 		return
 	
 	if is_connecting or connection_status == WebSocketPeer.STATE_CONNECTING:
-		print("Connection already in progress")
 		return
 	
-	print("Attempting to connect to server: ", server_url)
 	connection_attempts += 1
 	is_connecting = true
 	
@@ -141,7 +134,6 @@ func connect_to_server() -> void:
 	
 	var error = ws_client.connect_to_url(server_url)
 	if error != OK:
-		print("Failed to connect to server: ", error)
 		is_connecting = false
 		connection_error.emit("Failed to connect to server")
 		
@@ -156,7 +148,6 @@ func connect_to_server() -> void:
 
 func _on_connection_timeout():
 	if is_connecting and connection_status != WebSocketPeer.STATE_OPEN:
-		print("Connection timeout")
 		is_connecting = false
 		ws_client.close()
 		
@@ -166,7 +157,6 @@ func _on_connection_timeout():
 			connection_error.emit("Connection timeout")
 
 func disconnect_from_server() -> void:
-	print("Disconnecting from server")
 	is_connecting = false
 	connection_attempts = 0
 	
@@ -183,7 +173,6 @@ func _attempt_reconnect():
 	if connection_attempts < max_connection_attempts:
 		connect_to_server()
 	else:
-		print("Max connection attempts reached")
 		connection_error.emit("Could not connect to server after multiple attempts")
 
 func _send_ping():
@@ -193,19 +182,15 @@ func send_message(data: Dictionary) -> void:
 	if connection_status == WebSocketPeer.STATE_OPEN:
 		var json_string = JSON.stringify(data)
 		ws_client.send_text(json_string)
-	else:
-		print("Cannot send message - not connected to server")
 
 func _handle_server_message(message_text: String) -> void:
 	var json = JSON.new()
 	var parse_result = json.parse(message_text)
 	
 	if parse_result != OK:
-		print("Failed to parse server message: ", message_text)
 		return
 	
 	var data = json.data
-	print("Received from server: ", data)
 	
 	match data.get("type", ""):
 		"session_created":
@@ -221,14 +206,15 @@ func _handle_server_message(message_text: String) -> void:
 			session_joined.emit(data.pin, data.playerId, data.player)
 			
 		"player_list_update":
-			print("NetworkManager: Received player list update with ", data.players.size(), " players:")
-			for i in range(data.players.size()):
-				var player = data.players[i]
-				print("  Player ", i, ": ", player.get("name", "Unknown"), " (ID: ", player.get("id", "Unknown"), ", Host: ", player.get("isHost", false), ")")
 			player_list_updated.emit(data.players)
 			
 		"game_started":
-			game_started.emit()
+			var your_role = data.get("yourRole", "")
+			game_started.emit(your_role)
+			
+		"session_closed":
+			var reason = data.get("reason", "Session was closed")
+			session_closed.emit(reason)
 			
 		"pin_validation_result":
 			var pin = data.get("pin", "")
@@ -241,21 +227,16 @@ func _handle_server_message(message_text: String) -> void:
 			pin_validation_result.emit(pin, valid, info)
 			
 		"error":
-			print("Server error: ", data.message)
 			error_received.emit(data.message)
 			
 		"pong":
 			# Server responded to ping
 			pass
-			
-		_:
-			print("Unknown message type: ", data.get("type", ""))
 
 # API Methods for game actions
 func create_session(settings: Dictionary, host_name: String = "Host") -> void:
 	# Ensure we're connected before trying to create session
 	if not is_connected_to_server():
-		print("Not connected, attempting to connect...")
 		connect_to_server()
 		
 		# Wait for connection with timeout
@@ -268,7 +249,6 @@ func create_session(settings: Dictionary, host_name: String = "Host") -> void:
 			error_received.emit("Could not connect to server")
 			return
 	
-	print("Creating session with settings: ", settings, " host: ", host_name)
 	send_message({
 		"type": "create_session",
 		"settings": settings,

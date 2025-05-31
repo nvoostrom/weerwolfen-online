@@ -75,9 +75,14 @@ func setup_roles_section():
 		checkbox.disabled = true  # Disable for now since only Burger is implemented
 		checkbox.toggled.connect(_on_role_toggled.bind(role))
 		
+		# Fix contrast by applying proper colors
+		checkbox.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1, 1))  # Dark brown
+		checkbox.add_theme_color_override("font_disabled_color", Color(0.5, 0.4, 0.3, 1))  # Medium brown
+		
 		var role_icon = Label.new()
 		role_icon.text = "👤"  # Generic villager icon
 		role_icon.add_theme_font_size_override("font_size", 16)
+		role_icon.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1, 1))  # Dark brown for consistency
 		
 		role_container.add_child(role_icon)
 		role_container.add_child(checkbox)

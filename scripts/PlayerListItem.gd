@@ -9,12 +9,19 @@ extends Control
 var player_name: String = ""
 var is_host: bool = false
 var is_ready: bool = false
+var player_role: String = ""
+var game_started: bool = false
 
-func setup_player(name: String, host: bool = false, ready: bool = false):
+func setup_player(name: String, host: bool = false, ready: bool = false, role: String = ""):
 	player_name = name
 	is_host = host
 	is_ready = ready
+	player_role = role
 	
+	update_display()
+
+func set_game_started(started: bool):
+	game_started = started
 	update_display()
 
 func update_display():
@@ -26,16 +33,25 @@ func update_display():
 	# Set avatar based on host status
 	if is_host:
 		player_avatar.text = "👑"
-		player_status_label.text = "Spelleider"
 	else:
 		player_avatar.text = "👤"
-		player_status_label.text = "Dorpsbewoner"
 	
 	# Show host badge
 	host_badge.visible = is_host
 	if is_host:
 		host_badge.text = "👑 HOST"
 		host_badge.modulate = Color.GOLD
+	
+	# Update status label based on game state
+	if game_started and not player_role.is_empty():
+		# Game has started, show the role
+		player_status_label.text = player_role
+	else:
+		# Game hasn't started, show generic status
+		if is_host:
+			player_status_label.text = "Spelleider"
+		else:
+			player_status_label.text = "Dorpsbewoner"
 	
 	update_ready_status()
 	
@@ -96,6 +112,10 @@ func set_ready_status(ready: bool):
 		_animate_ready_change(ready)
 	
 	update_ready_status()
+
+func set_role(role: String):
+	player_role = role
+	update_display()
 
 func _animate_ready_change(ready: bool):
 	# Scale animation for status change
