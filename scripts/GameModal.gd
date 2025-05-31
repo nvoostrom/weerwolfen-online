@@ -45,10 +45,17 @@ func _ready():
 	# Connect to PIN validation result
 	NetworkManager.pin_validation_result.connect(_on_pin_validation_result)
 	
-	# Setup button hover effects
+	# Setup button styles and hover effects
 	_setup_button_effects()
 
 func _setup_button_effects():
+	# Style the buttons with proper medieval theme
+	_style_medieval_button(join_button, false)
+	_style_medieval_button(create_button, false)
+	_style_medieval_button(confirm_pin_button, true)
+	_style_medieval_button(back_button, false)
+	_style_medieval_button(close_button, false)
+	
 	# Add hover effects to buttons
 	var buttons = [join_button, create_button, confirm_pin_button, back_button, close_button]
 	
@@ -56,6 +63,42 @@ func _setup_button_effects():
 		if button:
 			button.mouse_entered.connect(_on_button_hover.bind(button))
 			button.mouse_exited.connect(_on_button_unhover.bind(button))
+
+func _style_medieval_button(button: Button, is_primary: bool):
+	if not button:
+		return
+	
+	# Remove any existing background children
+	for child in button.get_children():
+		child.queue_free()
+	
+	# Set consistent button size
+	button.custom_minimum_size = Vector2(140, 40)
+	
+	# Create styled background
+	var bg_panel = Panel.new()
+	bg_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bg_panel.z_index = -1
+	button.add_child(bg_panel)
+	
+	var bg_color = ColorRect.new()
+	bg_color.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg_color.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bg_panel.add_child(bg_color)
+	
+	if is_primary:
+		# Primary button styling
+		bg_color.color = Color(0.65, 0.35, 0.15, 1)
+		button.add_theme_color_override("font_color", Color(0.98, 0.95, 0.88, 1))
+		button.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.9, 1.0))
+		button.add_theme_color_override("font_pressed_color", Color(0.9, 0.85, 0.8, 1.0))
+	else:
+		# Secondary button styling
+		bg_color.color = Color(0.85, 0.80, 0.70, 1)
+		button.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1, 1))
+		button.add_theme_color_override("font_hover_color", Color(0.4, 0.3, 0.2, 1))
+		button.add_theme_color_override("font_pressed_color", Color(0.2, 0.1, 0.05, 1))
 
 func _on_button_hover(button: Button):
 	var tween = create_tween()
@@ -170,15 +213,134 @@ func _on_pin_validation_result(pin: String, valid: bool, info: Dictionary):
 	confirm_pin_button.modulate.a = 1.0  # Stop pulsing
 	
 	if valid:
-		# PIN is valid, proceed to join session
+		# PIN is valid, show name input dialog
 		show_success_feedback()
 		await get_tree().create_timer(0.5).timeout
-		pin_entered.emit(pin)
-		hide_modal()
+		show_player_name_dialog(pin)
 	else:
 		# Show error in modal
 		var error_message = info.get("error", "Ongeldige PIN")
 		show_pin_error(error_message)
+
+func show_player_name_dialog(pin: String):
+	# Hide the current modal first
+	hide_modal()
+	
+	# Wait a bit for the modal to hide
+	await get_tree().create_timer(0.3).timeout
+	
+	# Create a name input dialog using CustomDialog
+	var dialog = CustomDialog.create_dialog(
+		get_parent(), 
+		CustomDialog.DialogType.INPUT, 
+		"Welkom bij de Sessie!", 
+		"Voer je naam in om deel te nemen aan deze sessie.\nKies een naam die andere spelers kunnen herkennen.",
+		"Deelnemen", 
+		"Annuleren"
+	)
+	
+	if dialog.line_edit:
+		dialog.line_edit.placeholder_text = "Je speler naam..."
+		dialog.line_edit.text = ""
+	
+	dialog.confirmed.connect(_on_player_name_confirmed.bind(dialog, pin))
+	dialog.cancelled.connect(_on_player_name_cancelled.bind(dialog))
+
+func _on_player_name_confirmed(dialog, pin: String):
+	var player_name = dialog.get_input_text().strip_edges()
+	
+	if player_name.is_empty():
+		# Show error and recreate dialog
+		await get_tree().create_timer(0.2).timeout
+		show_name_error_and_retry(pin, "Voer een geldige naam in!")
+		return
+	
+	if player_name.length() < 2:
+		# Show error and recreate dialog
+		await get_tree().create_timer(0.2).timeout
+		show_name_error_and_retry(pin, "Je naam moet minimaal 2 karakters lang zijn!")
+		return
+	
+	# Store the data and join the session
+	GameData.join_pin = pin
+	
+	# Connect to network events for joining
+	if not NetworkManager.session_joined.is_connected(_on_session_joined_from_modal):
+		NetworkManager.session_joined.connect(_on_session_joined_from_modal)
+	if not NetworkManager.error_received.is_connected(_on_join_error_from_modal):
+		NetworkManager.error_received.connect(_on_join_error_from_modal)
+	
+	# Show loading dialog
+	show_joining_dialog(player_name)
+	
+	# Join the session
+	GameData.join_session_with_name(pin, player_name)
+
+func show_name_error_and_retry(pin: String, error_message: String):
+	var error_dialog = CustomDialog.create_dialog(
+		get_parent(),
+		CustomDialog.DialogType.ERROR,
+		"Ongeldige Naam",
+		error_message
+	)
+	
+	error_dialog.confirmed.connect(func(): show_player_name_dialog(pin))
+
+func show_joining_dialog(player_name: String):
+	var loading_dialog = CustomDialog.create_dialog(
+		get_parent(),
+		CustomDialog.DialogType.INFO,
+		"Sessie Deelnemen",
+		"Deelnemen aan sessie als " + player_name + "...\n\nEven geduld alsjeblieft.",
+		"" # No button text to prevent closing
+	)
+	
+	# Remove the button to prevent closing
+	if loading_dialog.confirm_button:
+		loading_dialog.confirm_button.visible = false
+
+func _on_session_joined_from_modal(pin: String, player_id: String, player_data: Dictionary):
+	# Disconnect the temporary event handlers
+	if NetworkManager.session_joined.is_connected(_on_session_joined_from_modal):
+		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
+	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
+		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
+	
+	# Show success dialog and navigate to session screen
+	var success_dialog = CustomDialog.create_dialog(
+		get_parent(),
+		CustomDialog.DialogType.INFO,
+		"Sessie Toegetreden!",
+		"Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
+		"Doorgaan"
+	)
+	
+	success_dialog.confirmed.connect(_navigate_to_session_screen)
+
+func _on_join_error_from_modal(error_message: String):
+	# Disconnect the temporary event handlers
+	if NetworkManager.session_joined.is_connected(_on_session_joined_from_modal):
+		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
+	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
+		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
+	
+	# Show error dialog
+	var error_dialog = CustomDialog.create_dialog(
+		get_parent(),
+		CustomDialog.DialogType.ERROR,
+		"Fout bij Deelnemen",
+		"Er is een probleem opgetreden:\n\n" + error_message + "\n\nProbeer het opnieuw."
+	)
+	
+	error_dialog.confirmed.connect(func(): show_player_name_dialog(GameData.join_pin))
+
+func _navigate_to_session_screen():
+	# Navigate to session screen
+	get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn")
+
+func _on_player_name_cancelled(dialog):
+	# User cancelled, go back to PIN entry
+	show_pin_entry()
 
 func show_success_feedback():
 	# Brief success animation

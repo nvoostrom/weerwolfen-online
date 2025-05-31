@@ -46,7 +46,7 @@ func _create_dialog_structure():
 	
 	# Dialog panel
 	dialog_panel = Panel.new()
-	dialog_panel.custom_minimum_size = Vector2(400, 200)
+	dialog_panel.custom_minimum_size = Vector2(420, 280)
 	center_container.add_child(dialog_panel)
 	
 	# Panel background layers (medieval style)
@@ -76,7 +76,7 @@ func _create_dialog_structure():
 	panel_inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	dialog_panel.add_child(panel_inner)
 	
-	# Content container
+	# Content container with proper padding
 	content_container = VBoxContainer.new()
 	content_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	content_container.set_offset(SIDE_LEFT, 30)
@@ -88,58 +88,91 @@ func _create_dialog_structure():
 	
 	# Header container
 	var header_container = HBoxContainer.new()
-	header_container.add_theme_constant_override("separation", 15)
+	header_container.add_theme_constant_override("separation", 12)
 	content_container.add_child(header_container)
 	
 	# Icon
 	icon_label = Label.new()
-	icon_label.add_theme_font_size_override("font_size", 32)
+	icon_label.add_theme_font_size_override("font_size", 28)
 	icon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	icon_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	icon_label.custom_minimum_size = Vector2(50, 50)
+	icon_label.custom_minimum_size = Vector2(45, 45)
 	header_container.add_child(icon_label)
 	
 	# Title and message container
 	var text_container = VBoxContainer.new()
 	text_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	text_container.add_theme_constant_override("separation", 10)
+	text_container.add_theme_constant_override("separation", 8)
 	header_container.add_child(text_container)
 	
 	# Title
 	title_label = Label.new()
-	title_label.add_theme_font_size_override("font_size", 20)
+	title_label.add_theme_font_size_override("font_size", 18)
 	title_label.add_theme_color_override("font_color", Color(0.2, 0.1, 0.05, 1))  # Dark brown
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	text_container.add_child(title_label)
 	
 	# Message
 	message_label = Label.new()
-	message_label.add_theme_font_size_override("font_size", 14)
+	message_label.add_theme_font_size_override("font_size", 13)
 	message_label.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1, 1))  # Medium brown
 	message_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	message_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	text_container.add_child(message_label)
 	
-	# Button container
+	# Button container with better spacing
 	button_container = HBoxContainer.new()
 	button_container.alignment = BoxContainer.ALIGNMENT_CENTER
-	button_container.add_theme_constant_override("separation", 15)
+	button_container.add_theme_constant_override("separation", 20)
+	button_container.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	content_container.add_child(button_container)
 
 func _create_medieval_button(text: String, is_primary: bool = false) -> Button:
 	var button = Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(120, 40)
-	button.add_theme_font_size_override("font_size", 14)
+	button.custom_minimum_size = Vector2(110, 35)
+	button.add_theme_font_size_override("font_size", 13)
 	
+	# Style the button directly with theme overrides instead of background children
 	if is_primary:
-		button.add_theme_color_override("font_color", Color.WHITE)
+		# Primary button styling
+		button.add_theme_color_override("font_color", Color(0.98, 0.95, 0.88, 1))
 		button.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.9, 1.0))
 		button.add_theme_color_override("font_pressed_color", Color(0.9, 0.85, 0.8, 1.0))
+		
+		# Create a simple background panel for primary button
+		var bg_panel = Panel.new()
+		bg_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		bg_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		bg_panel.z_index = -1
+		button.add_child(bg_panel)
+		
+		# Style the background panel
+		var bg_color = ColorRect.new()
+		bg_color.color = Color(0.65, 0.35, 0.15, 1)
+		bg_color.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		bg_color.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		bg_panel.add_child(bg_color)
+		
 	else:
+		# Secondary button styling
 		button.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1, 1))
 		button.add_theme_color_override("font_hover_color", Color(0.4, 0.3, 0.2, 1))
 		button.add_theme_color_override("font_pressed_color", Color(0.2, 0.1, 0.05, 1))
+		
+		# Create a simple background panel for secondary button
+		var bg_panel = Panel.new()
+		bg_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		bg_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		bg_panel.z_index = -1
+		button.add_child(bg_panel)
+		
+		# Style the background panel
+		var bg_color = ColorRect.new()
+		bg_color.color = Color(0.85, 0.80, 0.70, 1)
+		bg_color.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		bg_color.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		bg_panel.add_child(bg_color)
 	
 	# Add hover effects
 	button.mouse_entered.connect(_on_button_hover.bind(button))
@@ -182,18 +215,22 @@ func setup_dialog(type: DialogType, title: String, message: String, confirm_text
 	for child in button_container.get_children():
 		child.queue_free()
 	
-	# Add input field for INPUT type
+	# Add input field for INPUT type with proper styling
 	if type == DialogType.INPUT:
+		var input_container = CenterContainer.new()
+		content_container.add_child(input_container)
+		content_container.move_child(input_container, content_container.get_child_count() - 2)  # Before buttons
+		
 		line_edit = LineEdit.new()
 		line_edit.placeholder_text = "Voer tekst in..."
-		line_edit.custom_minimum_size = Vector2(200, 35)
+		line_edit.custom_minimum_size = Vector2(180, 32)
 		line_edit.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		line_edit.add_theme_font_size_override("font_size", 14)
+		line_edit.add_theme_font_size_override("font_size", 13)
 		line_edit.add_theme_color_override("font_color", Color(0.2, 0.1, 0.05, 1))
-		content_container.add_child(line_edit)
-		content_container.move_child(line_edit, content_container.get_child_count() - 2)  # Before buttons
+		
+		input_container.add_child(line_edit)
 	
-	# Create buttons
+	# Create buttons with medieval style
 	if type == DialogType.CONFIRMATION or type == DialogType.INPUT:
 		# Two buttons
 		cancel_button = _create_medieval_button(cancel_text, false)

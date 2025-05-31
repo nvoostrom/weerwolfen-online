@@ -11,7 +11,7 @@ func _ready():
 	if game_modal:
 		game_modal.join_session_requested.connect(_on_join_session_requested)
 		game_modal.create_session_requested.connect(_on_create_session_requested)
-		game_modal.pin_entered.connect(_on_pin_entered)
+		# Remove the pin_entered signal since we handle everything in GameModal now
 	
 	# Add visual polish
 	call_deferred("_setup_ui_enhancements")
@@ -58,12 +58,3 @@ func _on_create_session_requested():
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
 	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/CreateSessionScreen.tscn"))
-
-func _on_pin_entered(pin: String):
-	# Store the PIN for the join session screen
-	GameData.join_pin = pin
-	
-	# Smooth transition to join session screen
-	var tween = create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/JoinSessionScreen.tscn"))

@@ -4,7 +4,6 @@ extends Control
 @onready var pin_label = $MainContainer/ContentPanel/VBoxContainer/PinSection/PinHeader/PinLabel
 @onready var player_name_input = $MainContainer/ContentPanel/VBoxContainer/JoinSection/PlayerNameInput
 @onready var join_button = $MainContainer/ContentPanel/VBoxContainer/JoinSection/JoinButton
-@onready var players_list = $MainContainer/ContentPanel/VBoxContainer/PlayersSection/ScrollContainer/PlayersList
 @onready var waiting_label = $MainContainer/ContentPanel/VBoxContainer/StatusSection/WaitingLabel
 @onready var status_icon = $MainContainer/ContentPanel/VBoxContainer/StatusSection/StatusIcon
 
@@ -29,7 +28,6 @@ func _ready():
 	# Connect to network events
 	NetworkManager.connected_to_server.connect(_on_connected_to_server)
 	NetworkManager.session_joined.connect(_on_session_joined)
-	NetworkManager.player_list_updated.connect(_on_player_list_updated)
 	NetworkManager.error_received.connect(_on_network_error)
 	NetworkManager.connection_error.connect(_on_connection_error)
 	
@@ -113,63 +111,13 @@ func _on_session_joined(pin: String, player_id: String, player_data: Dictionary)
 	status_icon.modulate = Color.GREEN
 	waiting_label.text = "Welkom in de sessie!"
 	
-	# Show success dialog
-	var dialog = CustomDialog.show_info(
-		self,
-		"Sessie Toegetreden!",
-		"Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte."
-	)
-	
-	dialog.confirmed.connect(_navigate_to_session)
-
-func _navigate_to_session():
-	# Brief success animation then navigate
+	# Brief success animation then navigate directly
 	var tween = create_tween()
 	tween.tween_property(status_icon, "scale", Vector2(1.5, 1.5), 0.3).set_trans(Tween.TRANS_ELASTIC)
 	tween.tween_property(status_icon, "scale", Vector2.ONE, 0.3)
-	tween.tween_delay(0.3)
+	tween.tween_delay(0.5)
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
 	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn"))
-
-func _on_player_list_updated(players: Array):
-	# Clear existing player items with animation
-	for child in players_list.get_children():
-		_animate_player_leave(child)
-	
-	# Wait a bit then add new players
-	await get_tree().create_timer(0.2).timeout
-	
-	# Add current players with animation
-	for i in range(players.size()):
-		var player = players[i]
-		add_player_to_list(player.name, player.get("isHost", false))
-		
-		# Stagger the animations
-		await get_tree().create_timer(0.1).timeout
-
-func add_player_to_list(player_name: String, is_host: bool):
-	var player_item = preload("res://components/PlayerListItem.tscn").instantiate()
-	player_item.setup_player(player_name, is_host)
-	players_list.add_child(player_item)
-	
-	# Animate player item entrance
-	_animate_player_join(player_item)
-
-func _animate_player_join(player_item: Control):
-	player_item.scale = Vector2.ZERO
-	player_item.modulate.a = 0.0
-	
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(player_item, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(player_item, "modulate:a", 1.0, 0.3)
-
-func _animate_player_leave(player_item: Control):
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(player_item, "scale", Vector2(1.1, 0.0), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
-	tween.tween_property(player_item, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(player_item.queue_free).set_delay(0.3)
 
 func _on_back_button_pressed():
 	if not is_joining_session:
@@ -228,7 +176,8 @@ func reset_join_state():
 	status_icon.rotation = 0  # Stop rotation
 
 func show_error(title: String, message: String):
-	CustomDialog.show_error(self, title, message)
+	# Use the improved CustomDialog
+	var dialog = CustomDialog.create_dialog(self, CustomDialog.DialogType.ERROR, title, message)
 	
 	# Also update UI to show error state
 	waiting_label.text = "Fout: " + title
@@ -255,8 +204,6 @@ func _exit_tree():
 		NetworkManager.connected_to_server.disconnect(_on_connected_to_server)
 	if NetworkManager.session_joined.is_connected(_on_session_joined):
 		NetworkManager.session_joined.disconnect(_on_session_joined)
-	if NetworkManager.player_list_updated.is_connected(_on_player_list_updated):
-		NetworkManager.player_list_updated.disconnect(_on_player_list_updated)
 	if NetworkManager.error_received.is_connected(_on_network_error):
 		NetworkManager.error_received.disconnect(_on_network_error)
 	if NetworkManager.connection_error.is_connected(_on_connection_error):

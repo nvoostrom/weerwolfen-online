@@ -39,17 +39,35 @@ func update_display():
 	
 	update_ready_status()
 	
-	# Add subtle hover effect
+	# Add subtle hover effect that stays within container
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
 func _on_mouse_entered():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(1.02, 1.02), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	# Use a smaller scale and clip the content to prevent overflow
+	var inner_content = $MarginContainer
+	if inner_content:
+		var tween = create_tween()
+		# Much smaller scale to prevent overflow
+		tween.tween_property(inner_content, "scale", Vector2(1.01, 1.01), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		
+		# Add subtle glow effect instead of scaling
+		var panel_inner = get_node_or_null("PanelInner")
+		if panel_inner:
+			var glow_tween = create_tween()
+			glow_tween.tween_property(panel_inner, "modulate", Color(1.05, 1.02, 0.95, 1), 0.2)
 
 func _on_mouse_exited():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	var inner_content = $MarginContainer
+	if inner_content:
+		var tween = create_tween()
+		tween.tween_property(inner_content, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		
+		# Reset glow effect
+		var panel_inner = get_node_or_null("PanelInner")
+		if panel_inner:
+			var glow_tween = create_tween()
+			glow_tween.tween_property(panel_inner, "modulate", Color.WHITE, 0.2)
 
 func update_ready_status():
 	if not ready_indicator:
@@ -86,10 +104,12 @@ func _animate_ready_change(ready: bool):
 	tween.tween_property(ready_indicator, "scale", Vector2.ONE, 0.2)
 	
 	if ready:
-		# Green flash for becoming ready
-		var flash_tween = create_tween()
-		flash_tween.tween_property(self, "modulate", Color.GREEN, 0.1)
-		flash_tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+		# Green flash for becoming ready - apply to inner panel to stay contained
+		var panel_inner = get_node_or_null("PanelInner")
+		if panel_inner:
+			var flash_tween = create_tween()
+			flash_tween.tween_property(panel_inner, "modulate", Color(0.9, 1.1, 0.9, 1), 0.1)
+			flash_tween.tween_property(panel_inner, "modulate", Color.WHITE, 0.3)
 
 # Add entrance animation method that can be called externally
 func animate_entrance():

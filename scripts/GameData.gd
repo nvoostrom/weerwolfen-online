@@ -35,14 +35,14 @@ func _ready():
 
 func _on_session_created(pin: String, player_id: String):
 	current_session_pin = pin
-	is_host = true
-	print("GameData: Session created with PIN: ", pin)
+	is_host = true  # Person who creates session is always host
+	print("GameData: Session created with PIN: ", pin, " - Player is HOST")
 
 func _on_session_joined(pin: String, player_id: String, player_data: Dictionary):
 	current_session_pin = pin
-	is_host = player_data.get("isHost", false)
+	is_host = player_data.get("isHost", false)  # Get host status from server
 	current_player_name = player_data.get("name", "")
-	print("GameData: Joined session: ", pin)
+	print("GameData: Joined session: ", pin, " - Player is host: ", is_host)
 
 func _on_player_list_updated(new_players: Array):
 	print("GameData: Player list updated with ", new_players.size(), " players")
@@ -52,6 +52,13 @@ func _on_player_list_updated(new_players: Array):
 		if player is Dictionary:
 			players.append(player)
 	print("GameData: Player list now has ", players.size(), " players")
+	
+	# Update host status based on current player in the list
+	for player in players:
+		if player.get("id") == network_manager.get_current_player_id():
+			is_host = player.get("isHost", false)
+			print("GameData: Updated host status from player list: ", is_host)
+			break
 
 # Helper method to get current players for UI
 func get_current_players() -> Array:

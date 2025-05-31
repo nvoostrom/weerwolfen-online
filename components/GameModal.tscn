@@ -30,7 +30,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ModalContent" type="Panel" parent="ModalBackground/CenterContainer"]
-custom_minimum_size = Vector2(450, 400)
+custom_minimum_size = Vector2(420, 380)
 layout_mode = 2
 
 [node name="ModalContentBG" type="ColorRect" parent="ModalBackground/CenterContainer/ModalContent"]
@@ -89,7 +89,7 @@ layout_mode = 2
 
 [node name="ModalIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/TopBar"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 24
 text = "🏰"
 
@@ -108,7 +108,7 @@ text = "✕"
 [node name="TitleLabel" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 24
 text = "Weerwolven Online"
 horizontal_alignment = 1
 
@@ -148,17 +148,17 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="JoinButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(250, 50)
+custom_minimum_size = Vector2(220, 45)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "🚪 Deelnemen aan Sessie"
 
 [node name="CreateButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/InitialOptions/CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(250, 50)
+custom_minimum_size = Vector2(220, 45)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "⚡ Nieuwe Sessie Aanmaken"
 
 [node name="PinEntry" type="Control" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer"]
@@ -180,52 +180,51 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 
 [node name="PinSection" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 20
 
 [node name="PinIcon" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.5, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 28
 text = "🔑"
 horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "Voer de sessie PIN in:"
 horizontal_alignment = 1
 
 [node name="PinInput" type="LineEdit" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/PinSection"]
-custom_minimum_size = Vector2(200, 50)
+custom_minimum_size = Vector2(180, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 20
 placeholder_text = "123456"
 alignment = 1
 max_length = 6
 
-[node name="ButtonsSection" type="VBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer"]
+[node name="ButtonsSection" type="HBoxContainer" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="ConfirmButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/ButtonsSection"]
-custom_minimum_size = Vector2(200, 45)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
-theme_override_font_sizes/font_size = 16
-text = "✓ Bevestigen"
+theme_override_constants/separation = 15
+alignment = 1
 
 [node name="BackButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/ButtonsSection"]
-custom_minimum_size = Vector2(200, 35)
+custom_minimum_size = Vector2(140, 35)
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
 theme_override_font_sizes/font_size = 14
 text = "← Terug"
+
+[node name="ConfirmButton" type="Button" parent="ModalBackground/CenterContainer/ModalContent/VBoxContainer/ContentContainer/PinEntry/CenterContainer/VBoxContainer/ButtonsSection"]
+custom_minimum_size = Vector2(140, 45)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
+theme_override_font_sizes/font_size = 16
+text = "✓ Bevestigen"

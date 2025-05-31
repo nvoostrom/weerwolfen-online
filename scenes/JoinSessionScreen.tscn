@@ -85,7 +85,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ContentPanel" type="Panel" parent="MainContainer"]
-custom_minimum_size = Vector2(500, 600)
+custom_minimum_size = Vector2(480, 420)
 layout_mode = 2
 
 [node name="ContentPanelBG" type="ColorRect" parent="MainContainer/ContentPanel"]
@@ -131,10 +131,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = -30.0
-offset_bottom = -30.0
+offset_left = 35.0
+offset_top = 35.0
+offset_right = -35.0
+offset_bottom = -35.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
@@ -197,7 +197,7 @@ theme_override_constants/separation = 5
 
 [node name="JoinSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 18
 
 [node name="JoinHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
 layout_mode = 2
@@ -218,10 +218,10 @@ text = "Jouw Speler Naam"
 vertical_alignment = 1
 
 [node name="PlayerNameInput" type="LineEdit" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 placeholder_text = "Voer je naam in..."
 alignment = 1
 editable = false
@@ -234,46 +234,25 @@ text = "💡 Kies een naam die andere spelers kunnen herkennen"
 horizontal_alignment = 1
 
 [node name="JoinButton" type="Button" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection"]
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(220, 45)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.98, 0.95, 0.88, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 15
 disabled = true
 text = "🚪 Deelnemen aan Sessie"
 
-[node name="HSeparator3" type="HSeparator" parent="MainContainer/ContentPanel/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="PlayersSection" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 15
-
-[node name="PlayersHeader" type="HBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="PlayersIcon" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/PlayersHeader"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 20
-text = "👥"
-
-[node name="PlayersLabel" type="Label" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/PlayersHeader"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.2, 0.1, 0.05, 1)
-theme_override_font_sizes/font_size = 16
-text = "Spelers in Sessie:"
-vertical_alignment = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PlayersList" type="VBoxContainer" parent="MainContainer/ContentPanel/VBoxContainer/PlayersSection/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
+[node name="JoinButtonBG" type="ColorRect" parent="MainContainer/ContentPanel/VBoxContainer/JoinSection/JoinButton"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65, 0.35, 0.15, 1)

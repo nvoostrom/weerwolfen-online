@@ -139,24 +139,23 @@ func _on_create_button_pressed():
 		show_error("Configuratie Fout", "Minimum 4 spelers vereist!")
 		return
 	
-	# Ask for host name
+	# Ask for host name using the improved CustomDialog
 	show_host_name_dialog(player_count, rules)
 
 func show_host_name_dialog(player_count: int, rules: Dictionary):
-	# Create a custom dialog using the CustomDialog directly
-	var dialog_script = load("res://scripts/CustomDialog.gd")
-	var dialog = dialog_script.new()
-	add_child(dialog)
-	dialog.setup_dialog(CustomDialog.DialogType.INPUT, 
+	var dialog = CustomDialog.create_dialog(
+		self, 
+		CustomDialog.DialogType.INPUT, 
 		"Welkom, Spelleider!", 
 		"Voer je naam in als host van deze sessie.\nJe zult de sessie beheren en het spel starten.",
-		"Bevestigen", "Annuleren")
+		"Bevestigen", 
+		"Annuleren"
+	)
 	
 	if dialog.line_edit:
 		dialog.line_edit.placeholder_text = "Je naam als spelleider..."
 		dialog.line_edit.text = "Host"
 	
-	dialog.show_dialog()
 	dialog.confirmed.connect(_on_host_name_confirmed.bind(dialog, player_count, rules))
 
 func _on_host_name_confirmed(dialog, player_count: int, rules: Dictionary):
@@ -199,15 +198,14 @@ func _on_session_created(pin: String, player_id: String):
 	create_button.text = "✅ Sessie aangemaakt!"
 	create_button.modulate = Color.GREEN
 	
-	# Show success dialog using CustomDialog directly
-	var dialog_script = load("res://scripts/CustomDialog.gd")
-	var success_dialog = dialog_script.new()
-	add_child(success_dialog)
-	success_dialog.setup_dialog(CustomDialog.DialogType.INFO,
+	# Show success dialog using improved CustomDialog
+	var success_dialog = CustomDialog.create_dialog(
+		self,
+		CustomDialog.DialogType.INFO,
 		"Sessie Aangemaakt!",
 		"Je sessie is succesvol aangemaakt met PIN: " + pin + "\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
-		"OK")
-	success_dialog.show_dialog()
+		"OK"
+	)
 	success_dialog.confirmed.connect(_navigate_to_session)
 
 func _navigate_to_session():
@@ -237,18 +235,10 @@ func _reset_create_state():
 	create_button.modulate = Color.WHITE
 
 func show_error(title: String, message: String):
-	var dialog_script = load("res://scripts/CustomDialog.gd")
-	var dialog = dialog_script.new()
-	add_child(dialog)
-	dialog.setup_dialog(CustomDialog.DialogType.ERROR, title, message, "OK")
-	dialog.show_dialog()
+	CustomDialog.create_dialog(self, CustomDialog.DialogType.ERROR, title, message, "OK")
 
 func show_info(title: String, message: String):
-	var dialog_script = load("res://scripts/CustomDialog.gd")
-	var dialog = dialog_script.new()
-	add_child(dialog)
-	dialog.setup_dialog(CustomDialog.DialogType.INFO, title, message, "OK")
-	dialog.show_dialog()
+	CustomDialog.create_dialog(self, CustomDialog.DialogType.INFO, title, message, "OK")
 
 func _exit_tree():
 	# Disconnect from network events
