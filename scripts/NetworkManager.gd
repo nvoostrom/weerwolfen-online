@@ -86,7 +86,7 @@ func _process(_delta):
 				if last_connection_state != WebSocketPeer.STATE_CLOSED:
 					_handle_connection_closed()
 
-func _handle_connection_state_change(old_state: int, new_state: int):
+func _handle_connection_state_change(old_state: int, _new_state: int):
 	last_connection_state = old_state
 
 func _state_to_string(state: int) -> String:
@@ -257,8 +257,7 @@ func create_session(settings: Dictionary, host_name: String = "Host") -> void:
 
 func join_session(pin: String, player_name: String) -> void:
 	if not is_connected_to_server():
-		await connect_to_server()
-		# Wait a bit for connection to establish
+		connect_to_server()
 		await get_tree().create_timer(0.5).timeout
 	
 	if is_connected_to_server():
@@ -270,10 +269,10 @@ func join_session(pin: String, player_name: String) -> void:
 	else:
 		error_received.emit("Could not connect to server")
 
-func set_player_ready(ready: bool) -> void:
+func set_player_ready(is_ready: bool) -> void:
 	send_message({
 		"type": "set_ready",
-		"ready": ready
+		"ready": is_ready
 	})
 
 func start_game() -> void:
@@ -308,8 +307,7 @@ func request_player_list() -> void:
 
 func validate_pin(pin: String) -> void:
 	if not is_connected_to_server():
-		await connect_to_server()
-		# Wait a bit for connection to establish
+		connect_to_server()
 		await get_tree().create_timer(0.5).timeout
 	
 	if is_connected_to_server():

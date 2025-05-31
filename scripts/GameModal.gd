@@ -2,7 +2,6 @@ extends Control
 
 signal join_session_requested
 signal create_session_requested
-signal pin_entered(pin: String)
 
 @onready var modal_background = $ModalBackground
 @onready var modal_content = $ModalBackground/CenterContainer/ModalContent
@@ -230,7 +229,8 @@ func show_player_name_dialog(pin: String):
 	await get_tree().create_timer(0.3).timeout
 	
 	# Create a name input dialog using CustomDialog
-	var dialog = CustomDialog.create_dialog(
+	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
+	var dialog = CustomDialogClass.create_dialog(
 		get_parent(), 
 		CustomDialog.DialogType.INPUT, 
 		"Welkom bij de Sessie!", 
@@ -277,7 +277,8 @@ func _on_player_name_confirmed(dialog, pin: String):
 	GameData.join_session_with_name(pin, player_name)
 
 func show_name_error_and_retry(pin: String, error_message: String):
-	var error_dialog = CustomDialog.create_dialog(
+	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
+	var error_dialog = CustomDialogClass.create_dialog(
 		get_parent(),
 		CustomDialog.DialogType.ERROR,
 		"Ongeldige Naam",
@@ -287,7 +288,8 @@ func show_name_error_and_retry(pin: String, error_message: String):
 	error_dialog.confirmed.connect(func(): show_player_name_dialog(pin))
 
 func show_joining_dialog(player_name: String):
-	var loading_dialog = CustomDialog.create_dialog(
+	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
+	var loading_dialog = CustomDialogClass.create_dialog(
 		get_parent(),
 		CustomDialog.DialogType.INFO,
 		"Sessie Deelnemen",
@@ -299,7 +301,7 @@ func show_joining_dialog(player_name: String):
 	if loading_dialog.confirm_button:
 		loading_dialog.confirm_button.visible = false
 
-func _on_session_joined_from_modal(pin: String, player_id: String, player_data: Dictionary):
+func _on_session_joined_from_modal(_pin: String, _player_id: String, _player_data: Dictionary):
 	# Disconnect the temporary event handlers
 	if NetworkManager.session_joined.is_connected(_on_session_joined_from_modal):
 		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
@@ -307,7 +309,8 @@ func _on_session_joined_from_modal(pin: String, player_id: String, player_data: 
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
 	
 	# Show success dialog and navigate to session screen
-	var success_dialog = CustomDialog.create_dialog(
+	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
+	var success_dialog = CustomDialogClass.create_dialog(
 		get_parent(),
 		CustomDialog.DialogType.INFO,
 		"Sessie Toegetreden!",
@@ -323,9 +326,9 @@ func _on_join_error_from_modal(error_message: String):
 		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
 	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
-	
 	# Show error dialog
-	var error_dialog = CustomDialog.create_dialog(
+	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
+	var error_dialog = CustomDialogClass.create_dialog(
 		get_parent(),
 		CustomDialog.DialogType.ERROR,
 		"Fout bij Deelnemen",
@@ -338,7 +341,7 @@ func _navigate_to_session_screen():
 	# Navigate to session screen
 	get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn")
 
-func _on_player_name_cancelled(dialog):
+func _on_player_name_cancelled(_dialog):
 	# User cancelled, go back to PIN entry
 	show_pin_entry()
 
@@ -354,7 +357,7 @@ func show_success_feedback():
 func show_pin_error(message: String):
 	# Show error by changing input appearance
 	pin_input.modulate = Color.RED
-	var original_placeholder = pin_input.placeholder_text
+	var _original_placeholder = pin_input.placeholder_text
 	pin_input.placeholder_text = message
 	
 	# Shake animation for error feedback

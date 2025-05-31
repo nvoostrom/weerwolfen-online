@@ -100,7 +100,7 @@ func _on_connected_to_server():
 	tween.tween_property(player_name_input, "scale", Vector2.ONE, 0.3)
 	tween.tween_callback(player_name_input.grab_focus)
 
-func _on_session_joined(pin: String, player_id: String, player_data: Dictionary):
+func _on_session_joined(_pin: String, _player_id: String, _player_data: Dictionary):
 	# Reset UI state
 	is_joining_session = false
 	join_button.disabled = false
@@ -177,7 +177,7 @@ func reset_join_state():
 
 func show_error(title: String, message: String):
 	# Use the improved CustomDialog
-	var dialog = CustomDialog.create_dialog(self, CustomDialog.DialogType.ERROR, title, message)
+	var _dialog = load("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.ERROR, title, message)
 	
 	# Also update UI to show error state
 	waiting_label.text = "Fout: " + title

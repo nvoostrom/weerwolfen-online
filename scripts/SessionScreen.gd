@@ -227,9 +227,9 @@ func _on_back_button_pressed():
 		leave_session()
 
 func show_leave_confirmation():
-	var dialog = CustomDialog.create_dialog(
+	var dialog = load("res://scripts/CustomDialog.gd").create_dialog(
 		self,
-		CustomDialog.DialogType.CONFIRMATION,
+		load("res://scripts/CustomDialog.gd").DialogType.CONFIRMATION,
 		"Sessie Verlaten",
 		"Weet je zeker dat je de sessie wilt verlaten?\n\nAls spelleider zal dit de sessie voor alle spelers beëindigen.",
 		"Ja, Verlaten",
@@ -259,15 +259,15 @@ func _on_start_game_button_pressed():
 	GameData.start_game()
 
 func _on_game_started():
-	var dialog = CustomDialog.create_dialog(
+	var _dialog = load("res://scripts/CustomDialog.gd").create_dialog(
 		self,
-		CustomDialog.DialogType.INFO,
+		load("res://scripts/CustomDialog.gd").DialogType.INFO,
 		"Spel Gestart!",
 		"Het weerwolvenspel is succesvol gestart!\n\nAlle spelers kunnen nu beginnen met spelen."
 	)
 	
 	# TODO: Navigate to game screen when implemented
-	# dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://scenes/GameScreen.tscn"))
+	# _dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://scenes/GameScreen.tscn"))
 
 func _on_share_pin_button_pressed():
 	var pin = NetworkManager.get_current_session_pin()
@@ -289,9 +289,9 @@ func _on_share_pin_button_pressed():
 	)
 	
 	# Show info dialog
-	CustomDialog.create_dialog(
+	load("res://scripts/CustomDialog.gd").create_dialog(
 		self,
-		CustomDialog.DialogType.INFO,
+		load("res://scripts/CustomDialog.gd").DialogType.INFO,
 		"PIN Gedeeld",
 		"De sessie PIN (" + pin + ") is gekopieerd naar je klembord!\n\nDeel deze PIN met vrienden zodat zij kunnen deelnemen."
 	)
@@ -300,9 +300,9 @@ func _on_network_error(error_message: String):
 	show_error("Netwerk Fout", "Er is een probleem opgetreden met de netwerkverbinding:\n\n" + error_message)
 
 func _on_disconnected_from_server():
-	var dialog = CustomDialog.create_dialog(
+	var dialog = load("res://scripts/CustomDialog.gd").create_dialog(
 		self,
-		CustomDialog.DialogType.ERROR,
+		load("res://scripts/CustomDialog.gd").DialogType.ERROR,
 		"Verbinding Verbroken",
 		"De verbinding met de server is verbroken.\n\nJe wordt teruggebracht naar het hoofdmenu."
 	)
@@ -314,10 +314,10 @@ func _handle_disconnection():
 	leave_session()
 
 func show_error(title: String, message: String):
-	CustomDialog.create_dialog(self, CustomDialog.DialogType.ERROR, title, message)
+	load("res://scripts/CustomDialog.gd").create_dialog(self, load("res://scripts/CustomDialog.gd").DialogType.ERROR, title, message)
 
 func show_info(title: String, message: String):
-	CustomDialog.create_dialog(self, CustomDialog.DialogType.INFO, title, message)
+	load("res://scripts/CustomDialog.gd").create_dialog(self, load("res://scripts/CustomDialog.gd").DialogType.INFO, title, message)
 
 func _exit_tree():
 	# Disconnect from network events

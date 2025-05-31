@@ -33,12 +33,12 @@ func _ready():
 		network_manager.game_started.connect(_on_game_started)
 		network_manager.error_received.connect(_on_network_error)
 
-func _on_session_created(pin: String, player_id: String):
+func _on_session_created(pin: String, _player_id: String):
 	current_session_pin = pin
 	is_host = true  # Person who creates session is always host
 	print("GameData: Session created with PIN: ", pin, " - Player is HOST")
 
-func _on_session_joined(pin: String, player_id: String, player_data: Dictionary):
+func _on_session_joined(pin: String, _player_id: String, player_data: Dictionary):
 	current_session_pin = pin
 	is_host = player_data.get("isHost", false)  # Get host status from server
 	current_player_name = player_data.get("name", "")
@@ -101,9 +101,9 @@ func join_session_with_name(pin: String, player_name: String):
 	else:
 		print("NetworkManager not available!")
 
-func set_player_ready(ready: bool):
+func set_player_ready(is_ready: bool):
 	if network_manager:
-		network_manager.set_player_ready(ready)
+		network_manager.set_player_ready(is_ready)
 
 func start_game():
 	if network_manager and is_host:

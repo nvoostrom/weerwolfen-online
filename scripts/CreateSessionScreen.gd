@@ -148,7 +148,7 @@ func _on_create_button_pressed():
 	show_host_name_dialog(player_count, rules)
 
 func show_host_name_dialog(player_count: int, rules: Dictionary):
-	var dialog = CustomDialog.create_dialog(
+	var dialog = preload("res://scripts/CustomDialog.gd").create_dialog(
 		self, 
 		CustomDialog.DialogType.INPUT, 
 		"Welkom, Spelleider!", 
@@ -193,7 +193,7 @@ func _show_creating_state():
 	tween.tween_property(create_button, "modulate:a", 0.7, 0.5)
 	tween.tween_property(create_button, "modulate:a", 1.0, 0.5)
 
-func _on_session_created(pin: String, player_id: String):
+func _on_session_created(pin: String, _player_id: String):
 	print("Session created successfully with PIN: ", pin)
 	
 	# Reset UI state
@@ -204,7 +204,7 @@ func _on_session_created(pin: String, player_id: String):
 	create_button.modulate = Color.GREEN
 	
 	# Show success dialog using improved CustomDialog
-	var success_dialog = CustomDialog.create_dialog(
+	var success_dialog = preload("res://scripts/CustomDialog.gd").create_dialog(
 		self,
 		CustomDialog.DialogType.INFO,
 		"Sessie Aangemaakt!",
@@ -240,10 +240,10 @@ func _reset_create_state():
 	create_button.modulate = Color.WHITE
 
 func show_error(title: String, message: String):
-	CustomDialog.create_dialog(self, CustomDialog.DialogType.ERROR, title, message, "OK")
+	preload("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.ERROR, title, message, "OK")
 
 func show_info(title: String, message: String):
-	CustomDialog.create_dialog(self, CustomDialog.DialogType.INFO, title, message, "OK")
+	preload("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.INFO, title, message, "OK")
 
 func _exit_tree():
 	# Disconnect from network events

@@ -12,10 +12,10 @@ var is_ready: bool = false
 var player_role: String = ""
 var game_started: bool = false
 
-func setup_player(name: String, host: bool = false, ready: bool = false, role: String = ""):
-	player_name = name
+func setup_player(player_name_param: String, host: bool = false, ready_status: bool = false, role: String = ""):
+	player_name = player_name_param
 	is_host = host
-	is_ready = ready
+	is_ready = ready_status
 	player_role = role
 	
 	update_display()
@@ -103,13 +103,13 @@ func update_ready_status():
 		ready_indicator.modulate = Color.GRAY
 		ready_indicator.scale = Vector2.ONE  # Stop pulsing
 
-func set_ready_status(ready: bool):
+func set_ready_status(ready_status: bool):
 	var was_ready = is_ready
-	is_ready = ready
+	is_ready = ready_status
 	
 	# Animate the ready status change
-	if ready != was_ready:
-		_animate_ready_change(ready)
+	if ready_status != was_ready:
+		_animate_ready_change(ready_status)
 	
 	update_ready_status()
 
@@ -117,13 +117,13 @@ func set_role(role: String):
 	player_role = role
 	update_display()
 
-func _animate_ready_change(ready: bool):
+func _animate_ready_change(ready_status: bool):
 	# Scale animation for status change
 	var tween = create_tween()
 	tween.tween_property(ready_indicator, "scale", Vector2(1.5, 1.5), 0.2).set_trans(Tween.TRANS_ELASTIC)
 	tween.tween_property(ready_indicator, "scale", Vector2.ONE, 0.2)
 	
-	if ready:
+	if ready_status:
 		# Green flash for becoming ready - apply to inner panel to stay contained
 		var panel_inner = get_node_or_null("PanelInner")
 		if panel_inner:
