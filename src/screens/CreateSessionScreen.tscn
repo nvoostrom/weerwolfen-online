@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ejshodh7wpeu"]
 
-[ext_resource type="Script" uid="uid://cxsi15dki5x5a" path="res://scripts/CreateSessionScreen.gd" id="1_7j9kx"]
+[ext_resource type="Script" uid="uid://cxsi15dki5x5a" path="res://src/screens/CreateSessionScreen.gd" id="1_7j9kx"]
 
 [node name="CreateSessionScreen" type="Control"]
 layout_mode = 3

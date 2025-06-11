@@ -1,4 +1,5 @@
 extends Control
+const UIHelper = preload("res://src/global/UIHelper.gd")
 
 @onready var back_button = $TopBar/BackButton
 @onready var pin_label = $MainContainer/ContentPanel/VBoxContainer/PinSection/PinHeader/PinLabel
@@ -55,20 +56,10 @@ func _setup_ui_enhancements():
 	_animate_status_icon()
 
 func _setup_button_effects():
-	var buttons = [back_button, join_button]
-	
-	for button in buttons:
-		button.mouse_entered.connect(_on_button_hover.bind(button))
-		button.mouse_exited.connect(_on_button_unhover.bind(button))
+		var buttons = [back_button, join_button]
 
-func _on_button_hover(button: Button):
-	if not button.disabled:
-		var tween = create_tween()
-		tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-
-func _on_button_unhover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		for button in buttons:
+				UIHelper.add_hover_effect(button)
 
 func _animate_status_icon():
 	var tween = create_tween()
@@ -117,7 +108,7 @@ func _on_session_joined(_pin: String, _player_id: String, _player_data: Dictiona
 	tween.tween_property(status_icon, "scale", Vector2.ONE, 0.3)
 	tween.tween_delay(0.5)
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn"))
+	tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn"))
 
 func _on_back_button_pressed():
 	if not is_joining_session:
@@ -126,7 +117,7 @@ func _on_back_button_pressed():
 		# Smooth transition back
 		var tween = create_tween()
 		tween.tween_property(self, "modulate:a", 0.0, 0.3)
-		tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/MainScreen.tscn"))
+		tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
 
 func _on_join_button_pressed():
 	if is_joining_session:
@@ -176,8 +167,7 @@ func reset_join_state():
 	status_icon.rotation = 0  # Stop rotation
 
 func show_error(title: String, message: String):
-	# Use the improved CustomDialog
-	var _dialog = load("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.ERROR, title, message)
+	var _dialog = DialogHelper.show_error(self, title, message)
 	
 	# Also update UI to show error state
 	waiting_label.text = "Fout: " + title

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://btxqn7qp8xo2w"]
 
-[ext_resource type="Script" uid="uid://cdxlvqjoptuww" path="res://scripts/MainScreen.gd" id="1_0h7kj"]
-[ext_resource type="PackedScene" uid="uid://c8jn2x1bh7xap" path="res://components/GameModal.tscn" id="2_9k7xm"]
+[ext_resource type="Script" uid="uid://cdxlvqjoptuww" path="res://src/screens/MainScreen.gd" id="1_0h7kj"]
+[ext_resource type="PackedScene" uid="uid://c8jn2x1bh7xap" path="res://src/components/GameModal.tscn" id="2_9k7xm"]
 
 [node name="MainScreen" type="Control"]
 layout_mode = 3
