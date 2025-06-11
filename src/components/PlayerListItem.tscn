@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://x403p5rcwin6"]
 
-[ext_resource type="Script" uid="uid://deu4udvlef3gy" path="res://scripts/PlayerListItem.gd" id="1_4j8mx"]
+[ext_resource type="Script" uid="uid://deu4udvlef3gy" path="res://src/components/PlayerListItem.gd" id="1_4j8mx"]
 
 [node name="PlayerListItem" type="Control"]
 custom_minimum_size = Vector2(0, 80)

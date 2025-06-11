@@ -1,4 +1,5 @@
 extends Control
+const UIHelper = preload("res://src/global/UIHelper.gd")
 
 @onready var back_button = $TopBar/BackButton
 @onready var create_button = $TopBar/CreateButton
@@ -42,19 +43,10 @@ func _setup_ui_enhancements():
 	_setup_button_effects()
 
 func _setup_button_effects():
-	var buttons = [back_button, create_button]
-	
-	for button in buttons:
-		button.mouse_entered.connect(_on_button_hover.bind(button))
-		button.mouse_exited.connect(_on_button_unhover.bind(button))
+        var buttons = [back_button, create_button]
 
-func _on_button_hover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-
-func _on_button_unhover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+        for button in buttons:
+                UIHelper.add_hover_effect(button)
 
 func setup_player_count_spinner():
 	player_count_spinner.min_value = 4
@@ -121,7 +113,7 @@ func _on_back_button_pressed():
 		# Smooth transition back
 		var tween = create_tween()
 		tween.tween_property(self, "modulate:a", 0.0, 0.3)
-		tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/MainScreen.tscn"))
+       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
 
 func _on_create_button_pressed():
 	if is_creating_session:
@@ -148,18 +140,13 @@ func _on_create_button_pressed():
 	show_host_name_dialog(player_count, rules)
 
 func show_host_name_dialog(player_count: int, rules: Dictionary):
-	var dialog = preload("res://scripts/CustomDialog.gd").create_dialog(
-		self, 
-		CustomDialog.DialogType.INPUT, 
-		"Welkom, Spelleider!", 
-		"Voer je naam in als host van deze sessie.\nJe zult de sessie beheren en het spel starten.",
-		"Bevestigen", 
-		"Annuleren"
-	)
-	
-	if dialog.line_edit:
-		dialog.line_edit.placeholder_text = "Je naam als spelleider..."
-		dialog.line_edit.text = "Host"
+        var dialog = DialogHelper.show_input(
+                self,
+                "Welkom, Spelleider!",
+                "Voer je naam in als host van deze sessie.\nJe zult de sessie beheren en het spel starten.",
+                "Je naam als spelleider...",
+                "Host"
+        )
 	
 	dialog.confirmed.connect(_on_host_name_confirmed.bind(dialog, player_count, rules))
 
@@ -203,15 +190,13 @@ func _on_session_created(pin: String, _player_id: String):
 	create_button.text = "✅ Sessie aangemaakt!"
 	create_button.modulate = Color.GREEN
 	
-	# Show success dialog using improved CustomDialog
-	var success_dialog = preload("res://scripts/CustomDialog.gd").create_dialog(
-		self,
-		CustomDialog.DialogType.INFO,
-		"Sessie Aangemaakt!",
-		"Je sessie is succesvol aangemaakt met PIN: " + pin + "\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
-		"OK"
-	)
-	success_dialog.confirmed.connect(_navigate_to_session)
+        # Show success dialog
+        var success_dialog = DialogHelper.show_info(
+                self,
+                "Sessie Aangemaakt!",
+                "Je sessie is succesvol aangemaakt met PIN: " + pin + "\n\nJe wordt nu doorgestuurd naar de wachtruimte."
+        )
+        success_dialog.confirmed.connect(_navigate_to_session)
 
 func _navigate_to_session():
 	# Small delay then navigate
@@ -220,7 +205,7 @@ func _navigate_to_session():
 	# Smooth transition to session screen
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn"))
+       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn"))
 
 func _on_network_error(error_message: String):
 	print("Network error in CreateSessionScreen: ", error_message)
@@ -240,10 +225,10 @@ func _reset_create_state():
 	create_button.modulate = Color.WHITE
 
 func show_error(title: String, message: String):
-	preload("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.ERROR, title, message, "OK")
+        DialogHelper.show_error(self, title, message)
 
 func show_info(title: String, message: String):
-	preload("res://scripts/CustomDialog.gd").create_dialog(self, CustomDialog.DialogType.INFO, title, message, "OK")
+        DialogHelper.show_info(self, title, message)
 
 func _exit_tree():
 	# Disconnect from network events

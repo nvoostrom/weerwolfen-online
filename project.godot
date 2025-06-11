@@ -17,10 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameData="*res://scripts/GameData.gd"
-NetworkManager="*res://scripts/NetworkManager.gd"
-CustomDialog="*res://scripts/CustomDialog.gd"
-DialogHelper="*res://scripts/DialogHelper.gd"
+GameData="*res://src/global/GameData.gd"
+NetworkManager="*res://src/global/NetworkManager.gd"
+CustomDialog="*res://src/global/CustomDialog.gd"
+DialogHelper="*res://src/global/DialogHelper.gd"
 
 [rendering]
 

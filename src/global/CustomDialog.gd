@@ -1,4 +1,5 @@
 extends Control
+const UIHelper = preload("res://src/global/UIHelper.gd")
 
 signal confirmed
 signal cancelled
@@ -174,19 +175,11 @@ func _create_medieval_button(text: String, is_primary: bool = false) -> Button:
 		bg_color.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		bg_panel.add_child(bg_color)
 	
-	# Add hover effects
-	button.mouse_entered.connect(_on_button_hover.bind(button))
-	button.mouse_exited.connect(_on_button_unhover.bind(button))
+        # Add hover effects
+        UIHelper.add_hover_effect(button)
 	
 	return button
 
-func _on_button_hover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-
-func _on_button_unhover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 
 func setup_dialog(type: DialogType, title: String, message: String, confirm_text: String = "OK", cancel_text: String = "Annuleren"):
 	dialog_type = type
@@ -284,7 +277,7 @@ func get_input_text() -> String:
 
 # Helper function to create dialogs easily
 static func create_dialog(parent: Node, type: DialogType, title: String, message: String, confirm_text: String = "OK", cancel_text: String = "Annuleren") -> Control:
-	var dialog = preload("res://scripts/CustomDialog.gd").new()
+	var dialog = preload("res://src/global/CustomDialog.gd").new()
 	parent.add_child(dialog)
 	dialog.setup_dialog(type, title, message, confirm_text, cancel_text)
 	dialog.show_dialog()

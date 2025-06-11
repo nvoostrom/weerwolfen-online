@@ -1,4 +1,5 @@
 extends Control
+const UIHelper = preload("res://src/global/UIHelper.gd")
 
 signal join_session_requested
 signal create_session_requested
@@ -55,13 +56,11 @@ func _setup_button_effects():
 	_style_medieval_button(back_button, false)
 	_style_medieval_button(close_button, false)
 	
-	# Add hover effects to buttons
-	var buttons = [join_button, create_button, confirm_pin_button, back_button, close_button]
-	
-	for button in buttons:
-		if button:
-			button.mouse_entered.connect(_on_button_hover.bind(button))
-			button.mouse_exited.connect(_on_button_unhover.bind(button))
+        # Add hover effects to buttons
+        var buttons = [join_button, create_button, confirm_pin_button, back_button, close_button]
+
+        for button in buttons:
+                UIHelper.add_hover_effect(button)
 
 func _style_medieval_button(button: Button, is_primary: bool):
 	if not button:
@@ -99,13 +98,6 @@ func _style_medieval_button(button: Button, is_primary: bool):
 		button.add_theme_color_override("font_hover_color", Color(0.4, 0.3, 0.2, 1))
 		button.add_theme_color_override("font_pressed_color", Color(0.2, 0.1, 0.05, 1))
 
-func _on_button_hover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-
-func _on_button_unhover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 
 func _on_modal_background_input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -228,20 +220,17 @@ func show_player_name_dialog(pin: String):
 	# Wait a bit for the modal to hide
 	await get_tree().create_timer(0.3).timeout
 	
-	# Create a name input dialog using CustomDialog
-	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
-	var dialog = CustomDialogClass.create_dialog(
-		get_parent(), 
-		CustomDialog.DialogType.INPUT, 
-		"Welkom bij de Sessie!", 
-		"Voer je naam in om deel te nemen aan deze sessie.\nKies een naam die andere spelers kunnen herkennen.",
-		"Deelnemen", 
-		"Annuleren"
-	)
-	
-	if dialog.line_edit:
-		dialog.line_edit.placeholder_text = "Je speler naam..."
-		dialog.line_edit.text = ""
+        # Create a name input dialog
+        var dialog = DialogHelper.show_input(
+                get_parent(),
+                "Welkom bij de Sessie!",
+                "Voer je naam in om deel te nemen aan deze sessie.\nKies een naam die andere spelers kunnen herkennen.",
+                "Je speler naam...",
+                "",
+                "Deelnemen",
+                "Annuleren"
+        )
+
 	
 	dialog.confirmed.connect(_on_player_name_confirmed.bind(dialog, pin))
 	dialog.cancelled.connect(_on_player_name_cancelled.bind(dialog))
@@ -277,29 +266,25 @@ func _on_player_name_confirmed(dialog, pin: String):
 	GameData.join_session_with_name(pin, player_name)
 
 func show_name_error_and_retry(pin: String, error_message: String):
-	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
-	var error_dialog = CustomDialogClass.create_dialog(
-		get_parent(),
-		CustomDialog.DialogType.ERROR,
-		"Ongeldige Naam",
-		error_message
-	)
+        var error_dialog = DialogHelper.show_error(
+                get_parent(),
+                "Ongeldige Naam",
+                error_message
+        )
 	
 	error_dialog.confirmed.connect(func(): show_player_name_dialog(pin))
 
 func show_joining_dialog(player_name: String):
-	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
-	var loading_dialog = CustomDialogClass.create_dialog(
-		get_parent(),
-		CustomDialog.DialogType.INFO,
-		"Sessie Deelnemen",
-		"Deelnemen aan sessie als " + player_name + "...\n\nEven geduld alsjeblieft.",
-		"" # No button text to prevent closing
-	)
-	
-	# Remove the button to prevent closing
-	if loading_dialog.confirm_button:
-		loading_dialog.confirm_button.visible = false
+        var loading_dialog = DialogHelper.show_info(
+                get_parent(),
+                "Sessie Deelnemen",
+                "Deelnemen aan sessie als " + player_name + "...\n\nEven geduld alsjeblieft.",
+                ""
+        )
+
+        # Remove the button to prevent closing
+        if loading_dialog.confirm_button:
+                loading_dialog.confirm_button.visible = false
 
 func _on_session_joined_from_modal(_pin: String, _player_id: String, _player_data: Dictionary):
 	# Disconnect the temporary event handlers
@@ -308,15 +293,13 @@ func _on_session_joined_from_modal(_pin: String, _player_id: String, _player_dat
 	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
 	
-	# Show success dialog and navigate to session screen
-	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
-	var success_dialog = CustomDialogClass.create_dialog(
-		get_parent(),
-		CustomDialog.DialogType.INFO,
-		"Sessie Toegetreden!",
-		"Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
-		"Doorgaan"
-	)
+        # Show success dialog and navigate to session screen
+        var success_dialog = DialogHelper.show_info(
+                get_parent(),
+                "Sessie Toegetreden!",
+                "Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
+                "Doorgaan"
+        )
 	
 	success_dialog.confirmed.connect(_navigate_to_session_screen)
 
@@ -326,20 +309,18 @@ func _on_join_error_from_modal(error_message: String):
 		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
 	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
-	# Show error dialog
-	var CustomDialogClass = load("res://scripts/CustomDialog.gd")
-	var error_dialog = CustomDialogClass.create_dialog(
-		get_parent(),
-		CustomDialog.DialogType.ERROR,
-		"Fout bij Deelnemen",
-		"Er is een probleem opgetreden:\n\n" + error_message + "\n\nProbeer het opnieuw."
-	)
+        # Show error dialog
+        var error_dialog = DialogHelper.show_error(
+                get_parent(),
+                "Fout bij Deelnemen",
+                "Er is een probleem opgetreden:\n\n" + error_message + "\n\nProbeer het opnieuw."
+        )
 	
 	error_dialog.confirmed.connect(func(): show_player_name_dialog(GameData.join_pin))
 
 func _navigate_to_session_screen():
 	# Navigate to session screen
-	get_tree().change_scene_to_file("res://scenes/SessionScreen.tscn")
+       get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn")
 
 func _on_player_name_cancelled(_dialog):
 	# User cancelled, go back to PIN entry

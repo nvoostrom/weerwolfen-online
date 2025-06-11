@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8jn2x1bh7xap"]
 
-[ext_resource type="Script" uid="uid://xhtlses2l101" path="res://scripts/GameModal.gd" id="1_3h8kx"]
+[ext_resource type="Script" uid="uid://xhtlses2l101" path="res://src/components/GameModal.gd" id="1_3h8kx"]
 
 [node name="GameModal" type="Control"]
 visible = false

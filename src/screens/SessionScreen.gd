@@ -1,4 +1,5 @@
 extends Control
+const UIHelper = preload("res://src/global/UIHelper.gd")
 
 @onready var back_button = $TopBar/BackButton
 @onready var start_game_button = $TopBar/StartGameButton
@@ -90,21 +91,12 @@ func _setup_ui_enhancements():
 	_setup_button_effects()
 
 func _setup_button_effects():
-	var buttons = [back_button, start_game_button, share_pin_button]
-	
-	for button in buttons:
-		if button:
-			button.mouse_entered.connect(_on_button_hover.bind(button))
-			button.mouse_exited.connect(_on_button_unhover.bind(button))
+        var buttons = [back_button, start_game_button, share_pin_button]
 
-func _on_button_hover(button: Button):
-	if not button.disabled:
-		var tween = create_tween()
-		tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+        for button in buttons:
+                if button:
+                        UIHelper.add_hover_effect(button)
 
-func _on_button_unhover(button: Button):
-	var tween = create_tween()
-	tween.tween_property(button, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 
 func setup_session_display():
 	var pin = NetworkManager.get_current_session_pin()
@@ -214,7 +206,7 @@ func _highlight_start_button():
 	tween.tween_property(start_game_button, "modulate", original_modulate, 0.3)
 
 func add_player_to_list(player_name: String, is_host: bool, is_ready: bool = false):
-	var player_item = preload("res://components/PlayerListItem.tscn").instantiate()
+	var player_item = preload("res://src/components/PlayerListItem.tscn").instantiate()
 	player_item.setup_player(player_name, is_host, is_ready)
 	players_list.add_child(player_item)
 	
@@ -227,14 +219,13 @@ func _on_back_button_pressed():
 		leave_session()
 
 func show_leave_confirmation():
-	var dialog = load("res://scripts/CustomDialog.gd").create_dialog(
-		self,
-		load("res://scripts/CustomDialog.gd").DialogType.CONFIRMATION,
-		"Sessie Verlaten",
-		"Weet je zeker dat je de sessie wilt verlaten?\n\nAls spelleider zal dit de sessie voor alle spelers beëindigen.",
-		"Ja, Verlaten",
-		"Annuleren"
-	)
+        var dialog = DialogHelper.show_confirmation(
+                self,
+                "Sessie Verlaten",
+                "Weet je zeker dat je de sessie wilt verlaten?\n\nAls spelleider zal dit de sessie voor alle spelers beëindigen.",
+                "Ja, Verlaten",
+                "Annuleren"
+        )
 	
 	dialog.confirmed.connect(leave_session)
 
@@ -244,7 +235,7 @@ func leave_session():
 	# Smooth transition back to main screen
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(func(): get_tree().change_scene_to_file("res://scenes/MainScreen.tscn"))
+       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
 
 func _on_start_game_button_pressed():
 	if GameData.players.size() < 4:
@@ -259,15 +250,14 @@ func _on_start_game_button_pressed():
 	GameData.start_game()
 
 func _on_game_started():
-	var _dialog = load("res://scripts/CustomDialog.gd").create_dialog(
-		self,
-		load("res://scripts/CustomDialog.gd").DialogType.INFO,
-		"Spel Gestart!",
-		"Het weerwolvenspel is succesvol gestart!\n\nAlle spelers kunnen nu beginnen met spelen."
-	)
+        var _dialog = DialogHelper.show_info(
+                self,
+                "Spel Gestart!",
+                "Het weerwolvenspel is succesvol gestart!\n\nAlle spelers kunnen nu beginnen met spelen."
+        )
 	
 	# TODO: Navigate to game screen when implemented
-	# _dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://scenes/GameScreen.tscn"))
+       # _dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://src/screens/GameScreen.tscn"))
 
 func _on_share_pin_button_pressed():
 	var pin = NetworkManager.get_current_session_pin()
@@ -289,23 +279,21 @@ func _on_share_pin_button_pressed():
 	)
 	
 	# Show info dialog
-	load("res://scripts/CustomDialog.gd").create_dialog(
-		self,
-		load("res://scripts/CustomDialog.gd").DialogType.INFO,
-		"PIN Gedeeld",
-		"De sessie PIN (" + pin + ") is gekopieerd naar je klembord!\n\nDeel deze PIN met vrienden zodat zij kunnen deelnemen."
-	)
+        DialogHelper.show_info(
+                self,
+                "PIN Gedeeld",
+                "De sessie PIN (" + pin + ") is gekopieerd naar je klembord!\n\nDeel deze PIN met vrienden zodat zij kunnen deelnemen."
+        )
 
 func _on_network_error(error_message: String):
 	show_error("Netwerk Fout", "Er is een probleem opgetreden met de netwerkverbinding:\n\n" + error_message)
 
 func _on_disconnected_from_server():
-	var dialog = load("res://scripts/CustomDialog.gd").create_dialog(
-		self,
-		load("res://scripts/CustomDialog.gd").DialogType.ERROR,
-		"Verbinding Verbroken",
-		"De verbinding met de server is verbroken.\n\nJe wordt teruggebracht naar het hoofdmenu."
-	)
+        var dialog = DialogHelper.show_error(
+                self,
+                "Verbinding Verbroken",
+                "De verbinding met de server is verbroken.\n\nJe wordt teruggebracht naar het hoofdmenu."
+        )
 	
 	dialog.confirmed.connect(_handle_disconnection)
 
@@ -314,10 +302,10 @@ func _handle_disconnection():
 	leave_session()
 
 func show_error(title: String, message: String):
-	load("res://scripts/CustomDialog.gd").create_dialog(self, load("res://scripts/CustomDialog.gd").DialogType.ERROR, title, message)
+        DialogHelper.show_error(self, title, message)
 
 func show_info(title: String, message: String):
-	load("res://scripts/CustomDialog.gd").create_dialog(self, load("res://scripts/CustomDialog.gd").DialogType.INFO, title, message)
+        DialogHelper.show_info(self, title, message)
 
 func _exit_tree():
 	# Disconnect from network events
