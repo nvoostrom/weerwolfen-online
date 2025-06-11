@@ -1,14 +1,7 @@
 extends Node
 
 const CustomDialogClass = preload("res://src/global/CustomDialog.gd")
-
-enum DialogType {
-		INFO,
-		WARNING,
-		ERROR,
-		INPUT,
-		CONFIRMATION
-}
+const DialogType = CustomDialogClass.DialogType
 
 static func show_info(parent: Node, title: String, message: String, confirm_text: String = "OK"):
 	return CustomDialogClass.create_dialog(parent, DialogType.INFO, title, message, confirm_text)
