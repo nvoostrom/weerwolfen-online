@@ -56,10 +56,10 @@ func _setup_ui_enhancements():
 	_animate_status_icon()
 
 func _setup_button_effects():
-        var buttons = [back_button, join_button]
+		var buttons = [back_button, join_button]
 
-        for button in buttons:
-                UIHelper.add_hover_effect(button)
+		for button in buttons:
+				UIHelper.add_hover_effect(button)
 
 func _animate_status_icon():
 	var tween = create_tween()
@@ -108,7 +108,7 @@ func _on_session_joined(_pin: String, _player_id: String, _player_data: Dictiona
 	tween.tween_property(status_icon, "scale", Vector2.ONE, 0.3)
 	tween.tween_delay(0.5)
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn"))
+	tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn"))
 
 func _on_back_button_pressed():
 	if not is_joining_session:
@@ -117,7 +117,7 @@ func _on_back_button_pressed():
 		# Smooth transition back
 		var tween = create_tween()
 		tween.tween_property(self, "modulate:a", 0.0, 0.3)
-               tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
+		tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
 
 func _on_join_button_pressed():
 	if is_joining_session:
@@ -167,7 +167,7 @@ func reset_join_state():
 	status_icon.rotation = 0  # Stop rotation
 
 func show_error(title: String, message: String):
-        var _dialog = DialogHelper.show_error(self, title, message)
+	var _dialog = DialogHelper.show_error(self, title, message)
 	
 	# Also update UI to show error state
 	waiting_label.text = "Fout: " + title

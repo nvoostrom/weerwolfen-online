@@ -175,8 +175,8 @@ func _create_medieval_button(text: String, is_primary: bool = false) -> Button:
 		bg_color.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		bg_panel.add_child(bg_color)
 	
-        # Add hover effects
-        UIHelper.add_hover_effect(button)
+		# Add hover effects
+		UIHelper.add_hover_effect(button)
 	
 	return button
 

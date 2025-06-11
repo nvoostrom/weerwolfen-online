@@ -56,11 +56,11 @@ func _setup_button_effects():
 	_style_medieval_button(back_button, false)
 	_style_medieval_button(close_button, false)
 	
-        # Add hover effects to buttons
-        var buttons = [join_button, create_button, confirm_pin_button, back_button, close_button]
+	# Add hover effects to buttons
+	var buttons = [join_button, create_button, confirm_pin_button, back_button, close_button]
 
-        for button in buttons:
-                UIHelper.add_hover_effect(button)
+	for button in buttons:
+		UIHelper.add_hover_effect(button)
 
 func _style_medieval_button(button: Button, is_primary: bool):
 	if not button:
@@ -220,16 +220,16 @@ func show_player_name_dialog(pin: String):
 	# Wait a bit for the modal to hide
 	await get_tree().create_timer(0.3).timeout
 	
-        # Create a name input dialog
-        var dialog = DialogHelper.show_input(
-                get_parent(),
-                "Welkom bij de Sessie!",
-                "Voer je naam in om deel te nemen aan deze sessie.\nKies een naam die andere spelers kunnen herkennen.",
-                "Je speler naam...",
-                "",
-                "Deelnemen",
-                "Annuleren"
-        )
+	# Create a name input dialog
+	var dialog = DialogHelper.show_input(
+		get_parent(),
+		"Welkom bij de Sessie!",
+		"Voer je naam in om deel te nemen aan deze sessie.\nKies een naam die andere spelers kunnen herkennen.",
+		"Je speler naam...",
+		"",
+		"Deelnemen",
+		"Annuleren"
+	)
 
 	
 	dialog.confirmed.connect(_on_player_name_confirmed.bind(dialog, pin))
@@ -266,25 +266,25 @@ func _on_player_name_confirmed(dialog, pin: String):
 	GameData.join_session_with_name(pin, player_name)
 
 func show_name_error_and_retry(pin: String, error_message: String):
-        var error_dialog = DialogHelper.show_error(
-                get_parent(),
-                "Ongeldige Naam",
-                error_message
-        )
+	var error_dialog = DialogHelper.show_error(
+			get_parent(),
+			"Ongeldige Naam",
+			error_message
+	)
 	
 	error_dialog.confirmed.connect(func(): show_player_name_dialog(pin))
 
 func show_joining_dialog(player_name: String):
-        var loading_dialog = DialogHelper.show_info(
-                get_parent(),
-                "Sessie Deelnemen",
-                "Deelnemen aan sessie als " + player_name + "...\n\nEven geduld alsjeblieft.",
-                ""
-        )
+		var loading_dialog = DialogHelper.show_info(
+				get_parent(),
+				"Sessie Deelnemen",
+				"Deelnemen aan sessie als " + player_name + "...\n\nEven geduld alsjeblieft.",
+				""
+		)
 
-        # Remove the button to prevent closing
-        if loading_dialog.confirm_button:
-                loading_dialog.confirm_button.visible = false
+		# Remove the button to prevent closing
+		if loading_dialog.confirm_button:
+				loading_dialog.confirm_button.visible = false
 
 func _on_session_joined_from_modal(_pin: String, _player_id: String, _player_data: Dictionary):
 	# Disconnect the temporary event handlers
@@ -293,13 +293,13 @@ func _on_session_joined_from_modal(_pin: String, _player_id: String, _player_dat
 	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
 	
-        # Show success dialog and navigate to session screen
-        var success_dialog = DialogHelper.show_info(
-                get_parent(),
-                "Sessie Toegetreden!",
-                "Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
-                "Doorgaan"
-        )
+		# Show success dialog and navigate to session screen
+		var success_dialog = DialogHelper.show_info(
+				get_parent(),
+				"Sessie Toegetreden!",
+				"Je bent succesvol toegetreden tot de sessie!\n\nJe wordt nu doorgestuurd naar de wachtruimte.",
+				"Doorgaan"
+		)
 	
 	success_dialog.confirmed.connect(_navigate_to_session_screen)
 
@@ -309,18 +309,18 @@ func _on_join_error_from_modal(error_message: String):
 		NetworkManager.session_joined.disconnect(_on_session_joined_from_modal)
 	if NetworkManager.error_received.is_connected(_on_join_error_from_modal):
 		NetworkManager.error_received.disconnect(_on_join_error_from_modal)
-        # Show error dialog
-        var error_dialog = DialogHelper.show_error(
-                get_parent(),
-                "Fout bij Deelnemen",
-                "Er is een probleem opgetreden:\n\n" + error_message + "\n\nProbeer het opnieuw."
-        )
+		# Show error dialog
+		var error_dialog = DialogHelper.show_error(
+				get_parent(),
+				"Fout bij Deelnemen",
+				"Er is een probleem opgetreden:\n\n" + error_message + "\n\nProbeer het opnieuw."
+		)
 	
 	error_dialog.confirmed.connect(func(): show_player_name_dialog(GameData.join_pin))
 
 func _navigate_to_session_screen():
 	# Navigate to session screen
-       get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn")
+	get_tree().change_scene_to_file("res://src/screens/SessionScreen.tscn")
 
 func _on_player_name_cancelled(_dialog):
 	# User cancelled, go back to PIN entry

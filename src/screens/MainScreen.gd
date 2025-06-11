@@ -57,4 +57,4 @@ func _on_create_session_requested():
 	# Smooth transition to create session screen
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/CreateSessionScreen.tscn"))
+	tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/CreateSessionScreen.tscn"))

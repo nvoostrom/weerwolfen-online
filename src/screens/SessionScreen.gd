@@ -91,11 +91,11 @@ func _setup_ui_enhancements():
 	_setup_button_effects()
 
 func _setup_button_effects():
-        var buttons = [back_button, start_game_button, share_pin_button]
+		var buttons = [back_button, start_game_button, share_pin_button]
 
-        for button in buttons:
-                if button:
-                        UIHelper.add_hover_effect(button)
+		for button in buttons:
+				if button:
+						UIHelper.add_hover_effect(button)
 
 
 func setup_session_display():
@@ -219,13 +219,12 @@ func _on_back_button_pressed():
 		leave_session()
 
 func show_leave_confirmation():
-        var dialog = DialogHelper.show_confirmation(
-                self,
-                "Sessie Verlaten",
-                "Weet je zeker dat je de sessie wilt verlaten?\n\nAls spelleider zal dit de sessie voor alle spelers beëindigen.",
-                "Ja, Verlaten",
-                "Annuleren"
-        )
+	var dialog = DialogHelper.show_confirmation(
+		self,
+		"Sessie Verlaten",
+		"Weet je zeker dat je de sessie wilt verlaten?\n\nAls spelleider zal dit de sessie voor alle spelers beëindigen.",
+		"Ja, Verlaten",
+		"Annuleren")
 	
 	dialog.confirmed.connect(leave_session)
 
@@ -235,7 +234,7 @@ func leave_session():
 	# Smooth transition back to main screen
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-       tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
+	tween.tween_callback(func(): get_tree().change_scene_to_file("res://src/screens/MainScreen.tscn"))
 
 func _on_start_game_button_pressed():
 	if GameData.players.size() < 4:
@@ -250,14 +249,14 @@ func _on_start_game_button_pressed():
 	GameData.start_game()
 
 func _on_game_started():
-        var _dialog = DialogHelper.show_info(
-                self,
-                "Spel Gestart!",
-                "Het weerwolvenspel is succesvol gestart!\n\nAlle spelers kunnen nu beginnen met spelen."
-        )
+		var _dialog = DialogHelper.show_info(
+				self,
+				"Spel Gestart!",
+				"Het weerwolvenspel is succesvol gestart!\n\nAlle spelers kunnen nu beginnen met spelen."
+		)
 	
 	# TODO: Navigate to game screen when implemented
-       # _dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://src/screens/GameScreen.tscn"))
+	   # _dialog.confirmed.connect(func(): get_tree().change_scene_to_file("res://src/screens/GameScreen.tscn"))
 
 func _on_share_pin_button_pressed():
 	var pin = NetworkManager.get_current_session_pin()
@@ -279,21 +278,21 @@ func _on_share_pin_button_pressed():
 	)
 	
 	# Show info dialog
-        DialogHelper.show_info(
-                self,
-                "PIN Gedeeld",
-                "De sessie PIN (" + pin + ") is gekopieerd naar je klembord!\n\nDeel deze PIN met vrienden zodat zij kunnen deelnemen."
-        )
+	DialogHelper.show_info(
+		self,
+		"PIN Gedeeld",
+		"De sessie PIN (" + pin + ") is gekopieerd naar je klembord!\n\nDeel deze PIN met vrienden zodat zij kunnen deelnemen."
+		)
 
 func _on_network_error(error_message: String):
 	show_error("Netwerk Fout", "Er is een probleem opgetreden met de netwerkverbinding:\n\n" + error_message)
 
 func _on_disconnected_from_server():
-        var dialog = DialogHelper.show_error(
-                self,
-                "Verbinding Verbroken",
-                "De verbinding met de server is verbroken.\n\nJe wordt teruggebracht naar het hoofdmenu."
-        )
+	var dialog = DialogHelper.show_error(
+		self,
+		"Verbinding Verbroken",
+		"De verbinding met de server is verbroken.\n\nJe wordt teruggebracht naar het hoofdmenu."
+		)
 	
 	dialog.confirmed.connect(_handle_disconnection)
 
@@ -302,10 +301,10 @@ func _handle_disconnection():
 	leave_session()
 
 func show_error(title: String, message: String):
-        DialogHelper.show_error(self, title, message)
+		DialogHelper.show_error(self, title, message)
 
 func show_info(title: String, message: String):
-        DialogHelper.show_info(self, title, message)
+		DialogHelper.show_info(self, title, message)
 
 func _exit_tree():
 	# Disconnect from network events
